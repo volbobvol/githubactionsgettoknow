@@ -1,0 +1,27 @@
+{
+  "dependencies": {
+    "axios": "^0.27.2",
+    "filesize": "^10.0.5"
+  },
+  "scripts": {
+    "build": "node make.js build",
+    "test": "node make.js test",
+    "lint": "tslint --project tsconfig.json"
+  },
+  "name": "signpath.connectors.githubactions.tasks",
+  "version": "1.0.0",
+  "description": "Use SignPath to sign your build artifacts.",
+  "devDependencies": {
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.7.23",
+    "@types/q": "^1.5.5",
+    "@types/sinon": "^10.0.13",
+    "minimist": "^1.2.6",
+    "mocha": "^10.2.0",
+    "mocha-teamcity-reporter": ">=2.0.0",
+    "mock-require": "^3.0.3",
+    "sinon": "^15.0.0",
+    "tslint": "^6.1.3",
+    "typescript": "^4.9.4"
+  }
+}

@@ -1,0 +1,30 @@
+name: 'DownloadSignedArtifact'
+description: ''
+inputs:
+  CIUserToken:  
+    description: ''
+    required: true
+    default: ''
+  OrganizationId:  
+    description: ''
+    required: false
+    default: ''
+  ProjectSlug:  
+    description: ''
+    required: false
+    default: ''
+  SigningPolicySlug: 
+    description: ''
+    required: false
+    default: ''
+  ArtifactConfigurationSlug:  
+    description: ''
+    required: false
+    default: ''
+  ArtifactName: 
+    description: ''
+    required: false
+    default: ''
+runs:
+  using: 'node16'
+  main: 'index.js'

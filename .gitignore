@@ -5,3 +5,7 @@
 /TestApp/.vs
 /TestApp/TestApp/bin
 /TestApp/TestApp/obj
+/node_modules
+/Tasks/DownloadSignedArtifact/node_modules
+/Tasks/SubmitSigningRequest/node_modules
+/**/package-lock.json
