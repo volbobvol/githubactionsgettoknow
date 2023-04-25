@@ -51,3 +51,13 @@ jobs:
       with: 
         name: artifact-name
         path: "TestApp/TestApp/bin/Debug/net7.0"
+
+    - name: Run DownloadSignedArtifact
+      uses: volbobvol/githubactionsgettoknow@main/Tasks/DownloadSignedArtifact
+      with:
+        CIUserToken: AAA
+
+    - name: Run SubmitSigningRequest
+      uses: volbobvol/githubactionsgettoknow@main/Tasks/SubmitSigningRequest
+      with:
+        CIUserToken: BBB
