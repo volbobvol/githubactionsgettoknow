@@ -45,3 +45,9 @@ jobs:
       run: msbuild $env:Solution_Name
       env:
         Configuration: ${{ matrix.configuration }}
+
+    - name: Use the Upload Artifact GitHub Action
+      uses: actions/upload-artifact@v2
+      with: 
+        name: artifact-name
+        path: TestApp/TestApp/bin/Debug/net7.0
