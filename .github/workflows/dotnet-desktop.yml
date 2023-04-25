@@ -50,4 +50,4 @@ jobs:
       uses: actions/upload-artifact@v2
       with: 
         name: artifact-name
-        path: TestApp/TestApp/bin/Debug/net7.0
+        path: "TestApp/TestApp/bin/Debug/net7.0"
