@@ -7719,7 +7719,7 @@ class Task {
                     signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                     signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
                     signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true }),
-                    systemAccessToken: core.getInput('secrets.GITHUB_TOKEN', { required: true })
+                    systemAccessToken: core.getInput('github.token', { required: true })
                 };
                 core.debug(`Payload: ${btoa(JSON.stringify(submitRequestPayload))}`);
                 const response = (yield axios_1.default
