@@ -67,3 +67,4 @@ jobs:
         SigningPolicySlug: 'SigningPolicy'
         ArtifactConfigurationSlug: 'initial'
         ArtifactName: 'artifact-name'
+        GitHubToken: ${{ secrets.GITHUB_TOKEN }}
