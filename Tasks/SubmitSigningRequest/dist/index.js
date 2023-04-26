@@ -7715,6 +7715,11 @@ class Task {
                 const submitRequestPayload = {
                     ciUserToken: core.getInput('CIUserToken', { required: true }),
                     artifactName,
+                    gitHubApiUrl: core.getInput('GITHUB_API_URL', { required: true }),
+                    gitHubWorkflowRef: core.getInput('GITHUB_WORKFLOW_REF', { required: true }),
+                    gitHubWorkflowSha: core.getInput('GITHUB_WORKFLOW_SHA', { required: true }),
+                    gitHubWorkflowRunId: core.getInput('GITHUB_RUN_ID', { required: true }),
+                    gitHubWorkflowRunAttempt: core.getInput('GITHUB_RUN_ATTEMPT', { required: true }),
                     signPathOrganizationId: core.getInput('OrganizationId', { required: true }),
                     signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                     signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
