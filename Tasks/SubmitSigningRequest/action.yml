@@ -1,30 +1,27 @@
-name: 'DownloadSignedArtifact'
+name: 'SubmitSigningRequest'
 description: ''
 inputs:
-  CIUserToken:  
-    description: ''
+  SignPathconnectorUrl:
+    description: 'GitHub Actions SignPath connector URL'
     required: true
-    default: ''
-  OrganizationId:  
-    description: ''
-    required: false
-    default: ''
-  ProjectSlug:  
-    description: ''
-    required: false
-    default: ''
-  SigningPolicySlug: 
-    description: ''
-    required: false
-    default: ''
-  ArtifactConfigurationSlug:  
-    description: ''
-    required: false
-    default: ''
-  ArtifactName: 
-    description: ''
-    required: false
-    default: ''
+  CIUserToken:
+    description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
+    required: true
+  OrganizationId:
+    description: 'SignPath organization id. More detailes: https://about.signpath.io/documentation/getting-started'
+    required: true
+  ProjectSlug:
+    description: 'SignPath project slug. More detailes: https://about.signpath.io/documentation/projects'
+    required: true
+  SigningPolicySlug:
+    description: 'SignPath signing policy slug. More detailes: https://about.signpath.io/documentation/projects#signing-policies'
+    required: true
+  ArtifactConfigurationSlug:
+    description: 'SignPath artifact configuration id. More detailes: https://about.signpath.io/documentation/projects#artifact-configurations'
+    required: true
+  ArtifactName:
+    description: 'Name of the artifact to sign'
+    required: true
 runs:
   using: 'node16'
   main: 'index.js'

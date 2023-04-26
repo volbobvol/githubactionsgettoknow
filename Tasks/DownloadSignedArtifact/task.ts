@@ -2,8 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import axios from 'axios';
 import * as filesize from 'filesize'
-
-const SubmitSigningRequestTaskName = "SubmitSigningRequestAndWaitForCompletion";
+import * as core from '@actions/core'
 
 export class Task{
     async run() {
