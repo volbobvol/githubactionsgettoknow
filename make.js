@@ -22,6 +22,8 @@ CLI.build = function(args) {
 
     // transpile TypeScript to JavaScript
     run('tsc --rootDir tasks');
+
+    run('webpack', true, 'Tasks/SubmitSigningRequest');
 }
 
 CLI.test = function(args) {
