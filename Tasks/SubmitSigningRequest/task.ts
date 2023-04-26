@@ -24,7 +24,7 @@ export class Task{
             core.debug(`Payload: ${btoa(JSON.stringify(submitRequestPayload))}`);
 
             const response = (await axios
-                .post<SubmitSigningRequestResult>(connectorUrl + 'api/sign',
+                .post<SubmitSigningRequestResult>(connectorUrl /*+ 'api/sign'*/,
                 submitRequestPayload,
                 { responseType: "json" })
                 .catch((e: AxiosError) => {

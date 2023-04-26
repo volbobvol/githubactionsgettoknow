@@ -7723,7 +7723,7 @@ class Task {
                 };
                 core.debug(`Payload: ${btoa(JSON.stringify(submitRequestPayload))}`);
                 const response = (yield axios_1.default
-                    .post(connectorUrl + 'api/sign', submitRequestPayload, { responseType: "json" })
+                    .post(connectorUrl /*+ 'api/sign'*/, submitRequestPayload, { responseType: "json" })
                     .catch((e) => {
                     var _a;
                     if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
