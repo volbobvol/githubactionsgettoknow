@@ -24,4 +24,4 @@ inputs:
     required: true
 runs:
   using: 'node16'
-  main: 'task-bundle.js'
+  main: 'dist/index.js'

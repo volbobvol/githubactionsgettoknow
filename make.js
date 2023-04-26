@@ -23,7 +23,9 @@ CLI.build = function(args) {
     // transpile TypeScript to JavaScript
     run('tsc --rootDir tasks');
 
-    run('webpack', true, 'Tasks/SubmitSigningRequest');
+    run('ncc build index.js -o dist', true, 'Tasks/DownloadSignedArtifact');
+    run('ncc build index.js -o dist', true, 'Tasks/SubmitSigningRequest');
+    
 }
 
 CLI.test = function(args) {

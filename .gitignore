@@ -9,6 +9,5 @@
 /Tasks/DownloadSignedArtifact/node_modules
 /Tasks/SubmitSigningRequest/node_modules
 /**/package-lock.json
-/**/*.js
-!/**/task-bundle.js
-!/**/webpack.config.js
+/Tasks/**/*.js
+!/**/dist/*.js

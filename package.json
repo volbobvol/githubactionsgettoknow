@@ -13,6 +13,7 @@
   "description": "Use SignPath to sign your build artifacts.",
   "devDependencies": {
     "@types/mocha": "^9.1.1",
+    "@vercel/ncc": "^0.36.1",
     "@types/node": "^18.7.23",
     "@types/q": "^1.5.5",
     "@types/sinon": "^10.0.13",
