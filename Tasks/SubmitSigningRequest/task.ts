@@ -20,7 +20,7 @@ export class Task{
                 gitHubWorkflowSha: process.env.GITHUB_WORKFLOW_SHA,
                 gitHubWorkflowRunId: process.env.GITHUB_RUN_ID,
                 gitHubWorkflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT,
-                gitHubToken: process.env.GITHUB_TOKEN,
+                gitHubToken: core.getInput('GitHubToken', { required: true }),
 
                 signPathOrganizationId: core.getInput('OrganizationId', { required: true }),
                 signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
