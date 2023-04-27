@@ -73,7 +73,7 @@ export class Task{
             }
             else {
                 // either an Error message, Signing Request Id, or validation message should be present in the response
-                throw new Error('Invalid submit signing request result.');
+                // throw new Error('Invalid submit signing request result.');
             }
 
         }
