@@ -7720,13 +7720,13 @@ class Task {
                     gitHubWorkflowSha: process.env.GITHUB_WORKFLOW_SHA,
                     gitHubWorkflowRunId: process.env.GITHUB_RUN_ID,
                     gitHubWorkflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT,
+                    gitHubRepository: process.env.GITHUB_REPOSITORY,
                     gitHubToken: core.getInput('GitHubToken', { required: true }),
                     signPathOrganizationId: core.getInput('OrganizationId', { required: true }),
                     signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                     signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
                     signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true })
                 };
-                core.debug(`Payload: ${btoa(JSON.stringify(submitRequestPayload))}`);
                 const response = (yield axios_1.default
                     .post(connectorUrl /*+ 'api/sign'*/, submitRequestPayload, { responseType: "json" })
                     .catch((e) => {
@@ -7737,7 +7737,6 @@ class Task {
                     throw new Error(e.message);
                 }))
                     .data;
-                core.debug(JSON.stringify(response));
                 if (response.error) {
                     throw new Error(response.error);
                 }
@@ -7757,10 +7756,18 @@ class Task {
                     core.info('SignPath signing request has been successfully submitted.');
                     core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
                     core.setOutput('signingRequestId', response.signingRequestId);
+                    // check for status update
+                    // polly.default()
+                    //     .waitAndRetry(1)
+                    //     .executeForPromise(() => async () => {
+                    //     })
+                    //     .then(() => {
+                    //     })
+                    //     .catch(() => {
+                    //     })
                 }
                 else {
-                    // either an Error message, Signing Request Id, or validation message should be present in the response
-                    // throw new Error('Invalid submit signing request result.');
+                    throw new Error('Invalid submit signing request result.');
                 }
             }
             catch (err) {
