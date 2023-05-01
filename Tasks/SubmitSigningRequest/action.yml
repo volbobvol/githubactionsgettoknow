@@ -1,7 +1,7 @@
 name: 'SubmitSigningRequest'
 description: ''
 inputs:
-  SignPathconnectorUrl:
+  SignPathConnectorUrl:
     description: 'GitHub Actions SignPath connector URL'
     required: true
   CIUserToken:
@@ -25,6 +25,9 @@ inputs:
   GitHubToken:
     description: 'GitHub access token'
     required: true
+  SignPathApiUrl:
+    description: 'SignPath API base url'
+    default: 'https://app.signpath.io'
 runs:
   using: 'node16'
   main: 'dist/index.js'

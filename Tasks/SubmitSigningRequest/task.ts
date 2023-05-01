@@ -1,14 +1,26 @@
 import axios, { AxiosError } from 'axios';
 import * as core from '@actions/core'
 import * as polly from 'polly-js'
+import * as moment from 'moment';
 import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
+import { signingRequestStatusCheckdDelays } from './utils';
+import { SignPathUrlBuilder } from './signpath-url-builder';
+import { SigningRequestDto } from './DTOs/signing-request';
+
+const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
+const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min
+const MaxDelayBetweenSigningRequestStatusChecksMs = 1000 * 60 * 20; // check at least every 30 minutes
+
 
 export class Task{
     async run() {
         try {
             core.info('Execution started...');
-            const connectorUrl = core.getInput('SignPathconnectorUrl', { required: true });
+            const connectorUrl = core.getInput('SignPathConnectorUrl', { required: true });
             const artifactName = core.getInput('ArtifactName', { required: true });
+            const signPathApiBaseUrl = core.getInput('SignPathApiUrl', { required: true });
+            const signPathOrganizationId = core.getInput('OrganizationId', { required: true });
+            const urlBuilder = new SignPathUrlBuilder(signPathApiBaseUrl, connectorUrl);
 
             core.info('Submitting the signing request to the CI connector...');
 
@@ -24,14 +36,14 @@ export class Task{
                 gitHubRepository: process.env.GITHUB_REPOSITORY,
                 gitHubToken: core.getInput('GitHubToken', { required: true }),
 
-                signPathOrganizationId: core.getInput('OrganizationId', { required: true }),
+                signPathOrganizationId,
                 signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                 signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
                 signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true })
             };
 
             const response = (await axios
-                .post<SubmitSigningRequestResult>(connectorUrl /*+ 'api/sign'*/,
+                .post<SubmitSigningRequestResult>(urlBuilder.buildSubmitSigningRequestUrl(),
                 submitRequestPayload,
                 { responseType: "json" })
                 .catch((e: AxiosError) => {
@@ -71,17 +83,36 @@ export class Task{
                 core.setOutput('signingRequestId', response.signingRequestId);
 
                 // check for status update
-                // polly.default()
-                //     .waitAndRetry(1)
-                //     .executeForPromise(() => async () => {
+                const requestData = await polly.default()
+                  .waitAndRetry(signingRequestStatusCheckdDelays(
+                    MaxWaitingTimeForSigningRequestCompletionMs,
+                    MinDelayBetweenSigningRequestStatusChecksMs,
+                    MaxDelayBetweenSigningRequestStatusChecksMs
+                  ))
+                  .executeForPromise(async () => {
+                    core.info('Checking SignPath signing request status...');
+                    return await axios
+                      .get<SigningRequestDto>(
+                        urlBuilder.buildGetSigningRequestUrl(signPathOrganizationId, response.signingRequestId),
+                       { responseType: "json" })
+                       .then(res => {
+                         if(!res.data.isFinalStatus) {
+                            core.info(`The signing request status is ${res.data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
+                            throw new Error(`Status ${res.data.signingRequestStatus} is not a final status, we need to check again.`);
+                         }
+                         return res.data;
+                       });
+                  });
 
-                //     })
-                //     .then(() => {
+                if (!requestData.isFinalStatus) {
+                    const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
+                    core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
+                    core.error(`Signing request status is ${requestData.signingRequestStatus}`);
+                    throw new Error('Incomplete signing request');
+                } else {
+                    core.debug('');
+                }
 
-                //     })
-                //     .catch(() => {
-
-                //     })
             }
             else {
                 throw new Error('Invalid submit signing request result.');
