@@ -55,7 +55,7 @@ jobs:
     - name: Run SubmitSigningRequest
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
       with:
-        SignPathconnectorUrl: 'https://webhook.site/ac5bcd29-555a-43e7-9c80-345839595562'
+        SignPathconnectorUrl: 'http://ciconnector-new.westeurope.cloudapp.azure.com'
         CIUserToken: ${{ secrets.CI_USER_TOKEN }}
         OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
         ProjectSlug: 'Azure_DevOps_Integration'
