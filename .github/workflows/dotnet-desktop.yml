@@ -51,7 +51,9 @@ jobs:
       with: 
         name: artifact-name
         path: "TestApp/TestApp/bin/Debug/net7.0"
-
+  requestSignature:
+    runs-on: windows-latest
+    steps:
     - name: Run SubmitSigningRequest
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
       with:
