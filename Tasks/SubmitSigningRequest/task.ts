@@ -40,7 +40,8 @@ export class Task {
             core.info('The artifact has been successfully added.');
         }
         catch (err) {
-            core.setFailed((err as any).message);
+            core.error((err as any).message);
+            // core.setFailed((err as any).message);
         }
     }
 
@@ -91,8 +92,9 @@ export class Task {
             submitRequestPayload,
             { responseType: "json" })
             .catch((e: AxiosError) => {
+                core.error(`SignPath API call error: ${e.message}`);
                 if(e.response?.data && typeof(e.response.data) === "string") {
-                    throw new Error(e.response.data);
+                     throw new Error(e.response.data);
                 }
                 throw new Error(e.message);
             }))

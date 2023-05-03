@@ -20503,7 +20503,8 @@ class Task {
                 core.info('The artifact has been successfully added.');
             }
             catch (err) {
-                core.setFailed(err.message);
+                core.error(err.message);
+                // core.setFailed((err as any).message);
             }
         });
     }
@@ -20546,6 +20547,7 @@ class Task {
                 .post(this.urlBuilder.buildSubmitSigningRequestUrl(), submitRequestPayload, { responseType: "json" })
                 .catch((e) => {
                 var _a;
+                core.error(`SignPath API call error: ${e.message}`);
                 if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
                     throw new Error(e.response.data);
                 }
