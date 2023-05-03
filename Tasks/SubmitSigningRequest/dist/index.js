@@ -20492,6 +20492,7 @@ class Task {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                core.info(`ActionRuntime: ${process.env.ACTIONS_RUNTIME_URL}`);
                 const signingRequestId = yield this.submitSigningRequest();
                 core.setOutput('signingRequestId', signingRequestId);
                 const signingRequest = yield this.ensureSigningRequestCompleted(signingRequestId);

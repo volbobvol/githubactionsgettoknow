@@ -25,6 +25,8 @@ export class Task {
 
     async run() {
         try {
+            core.info(`ActionRuntime: ${process.env.ACTIONS_RUNTIME_URL}`);
+
 
             const signingRequestId = await this.submitSigningRequest();
             core.setOutput('signingRequestId', signingRequestId);
