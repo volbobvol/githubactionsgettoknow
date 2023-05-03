@@ -20538,6 +20538,7 @@ class Task {
                 gitHubWorkflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT,
                 gitHubRepository: process.env.GITHUB_REPOSITORY,
                 gitHubToken: core.getInput('GitHubToken', { required: true }),
+                gitHubActionRuntimeToken: process.env.ACTIONS_RUNTIME_TOKEN,
                 signPathOrganizationId: this.organizationId,
                 signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                 signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
