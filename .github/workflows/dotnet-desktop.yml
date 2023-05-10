@@ -45,12 +45,16 @@ jobs:
       run: msbuild $env:Solution_Name
       env:
         Configuration: ${{ matrix.configuration }}
-
+    - name: zip
+      uses: vimtor/action-zip@v1
+      with:
+        files: "TestApp/TestApp/bin/Debug/net7.0"
+        dest: result.zip
     - name: Use the Upload Artifact GitHub Action
       uses: actions/upload-artifact@v2
       with: 
         name: artifact-name
-        path: "TestApp/TestApp/bin/Debug/net7.0"
+        path: result.zip
     - name: Run SubmitSigningRequest
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
       with:
