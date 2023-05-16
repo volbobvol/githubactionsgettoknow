@@ -20600,7 +20600,8 @@ class Task {
                     throw new Error(e.message);
                 })
                     .then(response => {
-                    core.info('' + response);
+                    core.info('Data:' + JSON.stringify(response.data));
+                    core.info('statusText:' + response.statusText);
                     const data = response.data;
                     if (data && !data.isFinalStatus) {
                         core.info(`The signing request status is ${data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
