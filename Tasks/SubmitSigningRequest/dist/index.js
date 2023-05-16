@@ -20600,7 +20600,7 @@ class Task {
                     return res.data;
                 })
                     .catch(e => {
-                    core.info(`ERR: ${JSON.stringify(e)}`);
+                    core.info(e);
                     throw new Error(`SignPath API call error: ${JSON.stringify(e)}`);
                     throw e;
                 });
