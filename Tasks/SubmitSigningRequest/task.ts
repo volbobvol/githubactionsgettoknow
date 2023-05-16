@@ -152,13 +152,21 @@ export class Task {
                                 Authorization: `Bearer ${this.signPathToken}`
                             }
                         })
-                    .then(res => {
-                        core.info(`RES: ${JSON.stringify(res)}`);
-                        if(res.data && !res.data.isFinalStatus) {
-                            core.info(`The signing request status is ${res.data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
-                            throw new Error(`Status ${res.data.signingRequestStatus} is not a final status, we need to check again.`);
+                    .catch((e: AxiosError) => {
+                        core.error(`SignPath API call error: ${e.message}`);
+                        if(e.response?.data && typeof(e.response.data) === "string") {
+                                throw new Error(e.response.data);
                         }
-                        return res.data;
+                        throw new Error(e.message);
+                    })
+                    .then(response => {
+                        core.info('' + response);
+                        const data = response.data;
+                        if(data && !data.isFinalStatus) {
+                            core.info(`The signing request status is ${data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
+                            throw new Error(`Status ${data.signingRequestStatus} is not a final status, we need to check again.`);
+                        }
+                        return data;
                     })
                     .catch(e => {
                         core.info(e);
