@@ -1,7 +1,7 @@
 export interface SigningRequestDto
   {
-    signingRequestStatus: SigningRequestStatus;
-    signingRequestWorkflowStatus: SigningRequestWorkflowStatus;
+    status: SigningRequestStatus;
+    workflowStatus: SigningRequestWorkflowStatus;
     SignedArtifactLink: string;
     ProjectSlug: string;
     isFinalStatus: boolean;

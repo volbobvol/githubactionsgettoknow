@@ -160,28 +160,26 @@ export class Task {
                         throw new Error(e.message);
                     })
                     .then(response => {
-                        core.info(`Type: ${typeof(response.data)}` )
                         const data = response.data;
                         if(data && !data.isFinalStatus) {
-                            core.info(`The signing request status is ${data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
-                            throw new Error(`Status ${data.signingRequestStatus} is not a final status, we need to check again.`);
+                            core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
+                            throw new Error(`Status ${data.status} is not a final status, we need to check again.`);
                         }
                         return data;
                     })
                     .catch(e => {
                         core.info(e);
-                        throw new Error(`SignPath API call error: ${JSON.stringify(e)}`);
                         throw e;
                     });
             });
 
-        core.info(`Signing request status is ${requestData.signingRequestStatus}`);
+        core.info(`Signing request status is ${requestData.status}`);
         if (!requestData.isFinalStatus) {
             const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
             core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
             throw new Error('The signing request is not completed.');
         } else {
-            if (requestData.signingRequestStatus !== SigningRequestStatus.Completed) {
+            if (requestData.status !== SigningRequestStatus.Completed) {
                 throw new Error('The signing request is not completed.');
             }
         }
