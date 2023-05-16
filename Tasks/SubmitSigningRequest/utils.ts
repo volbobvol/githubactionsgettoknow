@@ -1,5 +1,3 @@
-import { SigningRequestStatus } from "./DTOs/signing-request";
-
 export function signingRequestStatusCheckdDelays(maxTotalWaitngTimeMs: number, minDelayMs: number, maxDelayMs: number): number[] {
  const delays = [];
  let totalDelay = 0;
@@ -23,21 +21,4 @@ export function signingRequestStatusCheckdDelays(maxTotalWaitngTimeMs: number, m
  }
 
  return delays;
-}
-
-export function IsFinalStatus(signingRequestStatus: SigningRequestStatus)
-{
-    switch (signingRequestStatus)
-    {
-        case SigningRequestStatus.InProgress:
-        case SigningRequestStatus.WaitingForApproval:
-            return false; // not final
-
-        case SigningRequestStatus.Canceled:
-        case SigningRequestStatus.Completed:
-        case SigningRequestStatus.Denied:
-        case SigningRequestStatus.Failed:
-            return true; // final
-    }
-    throw new Error(`SigningRequestStatus - ${signingRequestStatus} is not supported.`);
 }

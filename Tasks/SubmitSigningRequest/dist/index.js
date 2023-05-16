@@ -1,43 +1,6 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 1082:
-/***/ ((__unused_webpack_module, exports) => {
-
-"use strict";
-
-Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.SigningRequestStatus = exports.SigningRequestWorkflowStatus = void 0;
-var SigningRequestWorkflowStatus;
-(function (SigningRequestWorkflowStatus) {
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["Submitted"] = 0] = "Submitted";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["RetrievingArtifact"] = 1] = "RetrievingArtifact";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["WaitingForApproval"] = 2] = "WaitingForApproval";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["QueuedForMalwareScanning"] = 3] = "QueuedForMalwareScanning";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["ScanningForMalware"] = 4] = "ScanningForMalware";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["QueuedForProcessing"] = 5] = "QueuedForProcessing";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["Processing"] = 6] = "Processing";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["Completed"] = 7] = "Completed";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["ProcessingFailed"] = 8] = "ProcessingFailed";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["MalwareScanFailed"] = 9] = "MalwareScanFailed";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["MalwareDetected"] = 10] = "MalwareDetected";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["ArtifactRetrievalFailed"] = 11] = "ArtifactRetrievalFailed";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["Denied"] = 12] = "Denied";
-    SigningRequestWorkflowStatus[SigningRequestWorkflowStatus["Canceled"] = 13] = "Canceled";
-})(SigningRequestWorkflowStatus = exports.SigningRequestWorkflowStatus || (exports.SigningRequestWorkflowStatus = {}));
-var SigningRequestStatus;
-(function (SigningRequestStatus) {
-    SigningRequestStatus[SigningRequestStatus["InProgress"] = 0] = "InProgress";
-    SigningRequestStatus[SigningRequestStatus["WaitingForApproval"] = 1] = "WaitingForApproval";
-    SigningRequestStatus[SigningRequestStatus["Completed"] = 2] = "Completed";
-    SigningRequestStatus[SigningRequestStatus["Failed"] = 3] = "Failed";
-    SigningRequestStatus[SigningRequestStatus["Denied"] = 4] = "Denied";
-    SigningRequestStatus[SigningRequestStatus["Canceled"] = 5] = "Canceled";
-})(SigningRequestStatus = exports.SigningRequestStatus || (exports.SigningRequestStatus = {}));
-
-
-/***/ }),
-
 /***/ 7981:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
@@ -20481,7 +20444,6 @@ const moment = __importStar(__nccwpck_require__(7393));
 const filesize = __importStar(__nccwpck_require__(3075));
 const utils_1 = __nccwpck_require__(9586);
 const signpath_url_builder_1 = __nccwpck_require__(2139);
-const signing_request_1 = __nccwpck_require__(1082);
 const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
 const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min
 const MaxDelayBetweenSigningRequestStatusChecksMs = 1000 * 60 * 20; // check at least every 30 minutes
@@ -20619,7 +20581,7 @@ class Task {
                 throw new Error('The signing request is not completed.');
             }
             else {
-                if (requestData.status !== signing_request_1.SigningRequestStatus.Completed) {
+                if (requestData.status !== "Completed") {
                     throw new Error('The signing request is not completed.');
                 }
             }
@@ -20665,13 +20627,12 @@ exports.Task = Task;
 /***/ }),
 
 /***/ 9586:
-/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.IsFinalStatus = exports.signingRequestStatusCheckdDelays = void 0;
-const signing_request_1 = __nccwpck_require__(1082);
+exports.signingRequestStatusCheckdDelays = void 0;
 function signingRequestStatusCheckdDelays(maxTotalWaitngTimeMs, minDelayMs, maxDelayMs) {
     const delays = [];
     let totalDelay = 0;
@@ -20692,20 +20653,6 @@ function signingRequestStatusCheckdDelays(maxTotalWaitngTimeMs, minDelayMs, maxD
     return delays;
 }
 exports.signingRequestStatusCheckdDelays = signingRequestStatusCheckdDelays;
-function IsFinalStatus(signingRequestStatus) {
-    switch (signingRequestStatus) {
-        case signing_request_1.SigningRequestStatus.InProgress:
-        case signing_request_1.SigningRequestStatus.WaitingForApproval:
-            return false; // not final
-        case signing_request_1.SigningRequestStatus.Canceled:
-        case signing_request_1.SigningRequestStatus.Completed:
-        case signing_request_1.SigningRequestStatus.Denied:
-        case signing_request_1.SigningRequestStatus.Failed:
-            return true; // final
-    }
-    throw new Error(`SigningRequestStatus - ${signingRequestStatus} is not supported.`);
-}
-exports.IsFinalStatus = IsFinalStatus;
 
 
 /***/ }),

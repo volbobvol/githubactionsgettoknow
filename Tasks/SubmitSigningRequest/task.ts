@@ -9,7 +9,7 @@ import * as filesize from 'filesize'
 import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
 import { signingRequestStatusCheckdDelays } from './utils';
 import { SignPathUrlBuilder } from './signpath-url-builder';
-import { SigningRequestDto, SigningRequestStatus } from './DTOs/signing-request';
+import { SigningRequestDto } from './DTOs/signing-request';
 
 const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
 const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min
