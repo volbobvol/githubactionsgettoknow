@@ -82,8 +82,6 @@ export class Task {
             gitHubWorkflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT,
             gitHubRepository: process.env.GITHUB_REPOSITORY,
             gitHubToken: core.getInput('GitHubToken', { required: true }),
-            gitHubActionRuntimeToken: process.env.ACTIONS_RUNTIME_TOKEN,
-            gitHubActionRuntimeUrl: process.env.ACTIONS_RUNTIME_URL,
             signPathOrganizationId: this.organizationId,
             signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
             signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
@@ -148,17 +146,27 @@ export class Task {
                 return await axios
                     .get<SigningRequestDto>(
                         this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingrequestId),
-                        { responseType: "json" })
+                        {
+                            responseType: "json",
+                            headers:{
+                                Authorization: `Bearer ${this.signPathToken}`
+                            }
+                        })
                     .then(res => {
-                        if(!res.data.isFinalStatus) {
+
+                        if(res.data && !res.data.isFinalStatus) {
                             core.info(`The signing request status is ${res.data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
                             throw new Error(`Status ${res.data.signingRequestStatus} is not a final status, we need to check again.`);
                         }
                         return res.data;
+                    })
+                    .catch(e => {
+                        throw new Error(`SignPath API call error: ${JSON.stringify(e)}`);
+                        throw e;
                     });
             });
 
-        core.error(`Signing request status is ${requestData.signingRequestStatus}`);
+        core.info(`Signing request status is ${requestData.signingRequestStatus}`);
         if (!requestData.isFinalStatus) {
             const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
             core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
