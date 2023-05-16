@@ -160,9 +160,7 @@ export class Task {
                         throw new Error(e.message);
                     })
                     .then(response => {
-                        core.info('Data:' + JSON.stringify(response.data));
-                        core.info('statusText:' + response.statusText);
-                        const data = response.data;
+                        const data = JSON.parse(response.data + '');
                         if(data && !data.isFinalStatus) {
                             core.info(`The signing request status is ${data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
                             throw new Error(`Status ${data.signingRequestStatus} is not a final status, we need to check again.`);
