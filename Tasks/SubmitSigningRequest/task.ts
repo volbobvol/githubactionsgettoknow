@@ -179,7 +179,7 @@ export class Task {
             core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
             throw new Error('The signing request is not completed.');
         } else {
-            if (requestData.status !== SigningRequestStatus.Completed) {
+            if (requestData.status !== "Completed") {
                 throw new Error('The signing request is not completed.');
             }
         }
