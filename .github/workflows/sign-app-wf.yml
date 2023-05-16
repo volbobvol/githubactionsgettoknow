@@ -25,7 +25,7 @@ jobs:
         OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
         ProjectSlug: 'Azure_DevOps_Integration'
         SigningPolicySlug: 'SigningPolicy'
-        ArtifactConfigurationSlug: 'initial'
+        ArtifactConfigurationSlug: 'testzip'
         ArtifactName: 'artifact-name'
         GitHubToken: ${{ secrets.GITHUB_TOKEN }}
     - name: Sleep for 3000 seconds
