@@ -153,7 +153,7 @@ export class Task {
                             }
                         })
                     .then(res => {
-
+                        core.info(`RES: ${JSON.stringify(res)}`);
                         if(res.data && !res.data.isFinalStatus) {
                             core.info(`The signing request status is ${res.data.signingRequestStatus}, which is not a final status; after delay, we will check again...`);
                             throw new Error(`Status ${res.data.signingRequestStatus} is not a final status, we need to check again.`);
@@ -161,6 +161,7 @@ export class Task {
                         return res.data;
                     })
                     .catch(e => {
+                        core.info(`ERR: ${JSON.stringify(e)}`);
                         throw new Error(`SignPath API call error: ${JSON.stringify(e)}`);
                         throw e;
                     });
