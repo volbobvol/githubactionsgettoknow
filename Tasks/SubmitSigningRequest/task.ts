@@ -196,7 +196,7 @@ export class Task {
         core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
 
         const writer = fs.createWriteStream(targetFilePath)
-        const response = await axios.get(signingRequest.SignedArtifactLink, {
+        const response = await axios.get(signingRequest.signedArtifactLink, {
             responseType: 'stream',
             headers: {
                 Authorization: 'Bearer ' + this.signPathToken
