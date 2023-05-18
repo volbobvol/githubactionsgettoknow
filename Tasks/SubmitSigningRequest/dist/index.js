@@ -20343,14 +20343,6 @@ class Task {
                         "Authorization": `Bearer ${this.signPathToken}`
                     }
                 })
-                    .then((response) => {
-                    const data = response.data;
-                    if (data && !data.isFinalStatus) {
-                        core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
-                        throw new Error('Retry signing request status check.');
-                    }
-                    return data;
-                })
                     .catch((e) => {
                     var _a;
                     core.error(`SignPath API call error: ${e.message}`);
@@ -20360,6 +20352,14 @@ class Task {
                         }));
                     }
                     throw new Error(e.message);
+                })
+                    .then((response) => {
+                    const data = response.data;
+                    if (data && !data.isFinalStatus) {
+                        core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
+                        throw new Error('Retry signing request status check.');
+                    }
+                    return data;
                 }));
                 return signingRequestDto;
             }), MaxWaitingTimeForSigningRequestCompletionMs, MinDelayBetweenSigningRequestStatusChecksMs, MaxDelayBetweenSigningRequestStatusChecksMs)

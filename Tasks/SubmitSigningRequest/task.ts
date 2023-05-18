@@ -150,14 +150,6 @@ export class Task {
                             }
                         }
                     )
-                    .then((response) => {
-                        const data = response.data;
-                        if(data && !data.isFinalStatus) {
-                            core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
-                            throw new Error('Retry signing request status check.');
-                        }
-                        return data;
-                    })
                     .catch((e: AxiosError) => {
                         core.error(`SignPath API call error: ${e.message}`);
                         if(e.response?.data && typeof(e.response.data) === "string") {
@@ -167,6 +159,14 @@ export class Task {
                                 }));
                         }
                         throw new Error(e.message);
+                    })
+                    .then((response) => {
+                        const data = response.data;
+                        if(data && !data.isFinalStatus) {
+                            core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
+                            throw new Error('Retry signing request status check.');
+                        }
+                        return data;
                     }));
                 return signingRequestDto;
             },
