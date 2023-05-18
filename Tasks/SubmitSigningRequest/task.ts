@@ -7,7 +7,7 @@ import * as path from 'path';
 import * as moment from 'moment';
 import * as filesize from 'filesize'
 import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
-import { signingRequestStatusCheckdDelays } from './utils';
+import { executeWithRetries } from './utils';
 import { SignPathUrlBuilder } from './signpath-url-builder';
 import { SigningRequestDto } from './DTOs/signing-request';
 
@@ -43,7 +43,7 @@ export class Task {
         }
         catch (err) {
             core.error((err as any).message);
-            // core.setFailed((err as any).message);
+            core.setFailed((err as any).message);
         }
     }
 
@@ -135,52 +135,60 @@ export class Task {
 
     async ensureSigningRequestCompleted(signingrequestId: string): Promise<SigningRequestDto> {
         // check for status update
-        const requestData = await polly.default()
-            .waitAndRetry(signingRequestStatusCheckdDelays(
-                MaxWaitingTimeForSigningRequestCompletionMs,
-                MinDelayBetweenSigningRequestStatusChecksMs,
-                MaxDelayBetweenSigningRequestStatusChecksMs
-            ))
-            .executeForPromise(async () => {
-                core.info('Checking SignPath signing request status...');
-                return await axios
+        const requestData = await (executeWithRetries<SigningRequestDto>(
+            async () => {
+                const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(
+                    this.organizationId,
+                    signingrequestId);
+                const signingRequestDto = (await axios
                     .get<SigningRequestDto>(
-                        this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingrequestId),
+                        requestStatusUrl,
                         {
                             responseType: "json",
-                            headers:{
-                                Authorization: `Bearer ${this.signPathToken}`
+                            headers: {
+                                "Authorization": `Bearer ${this.signPathToken}`
                             }
-                        })
-                    .catch((e: AxiosError) => {
-                        core.error(`SignPath API call error: ${e.message}`);
-                        if(e.response?.data && typeof(e.response.data) === "string") {
-                                throw new Error(e.response.data);
                         }
-                        throw new Error(e.message);
-                    })
-                    .then(response => {
+                    )
+                    .then((response) => {
                         const data = response.data;
                         if(data && !data.isFinalStatus) {
                             core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
-                            throw new Error(`Status ${data.status} is not a final status, we need to check again.`);
+                            throw new Error('Retry signing request status check.');
                         }
                         return data;
                     })
-                    .catch(e => {
-                        core.info(e);
-                        throw e;
-                    });
-            });
+                    .catch((e: AxiosError) => {
+                        core.error(`SignPath API call error: ${e.message}`);
+                        if(e.response?.data && typeof(e.response.data) === "string") {
+                            throw new Error(JSON.stringify(
+                                {
+                                    'data': e.response.data
+                                }));
+                        }
+                        throw new Error(e.message);
+                    }));
+                return signingRequestDto;
+            },
+            MaxWaitingTimeForSigningRequestCompletionMs,
+            MinDelayBetweenSigningRequestStatusChecksMs,
+            MaxDelayBetweenSigningRequestStatusChecksMs)
+            .catch((e) => {
+                if(e.message.startsWith('{')) {
+                    const errorData = JSON.parse(e.message);
+                    return errorData.data;
+                }
+                throw e;
+            }));
 
         core.info(`Signing request status is ${requestData.status}`);
         if (!requestData.isFinalStatus) {
             const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
             core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
-            throw new Error('The signing request is not completed.');
+            throw new Error(`The signing request is not completed. The current status is "${requestData.status}`);
         } else {
             if (requestData.status !== "Completed") {
-                throw new Error('The signing request is not completed.');
+                throw new Error(`The signing request is not completed. The final status is "${requestData.status}.`);
             }
         }
 
@@ -190,7 +198,6 @@ export class Task {
     async dowloadTheSigninedArtifact(signingRequest: SigningRequestDto): Promise<string> {
         const workingDir = process.env.GITHUB_WORKSPACE as string;
         const fileName = `${this.artifactName}_signed.zip`;
-        const artifactFileName = `${this.artifactName}_signed`;
         const targetFilePath = path.join(workingDir, fileName);
 
         core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);

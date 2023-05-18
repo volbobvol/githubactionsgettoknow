@@ -17975,213 +17975,6 @@ module.exports.win32 = win32;
 
 /***/ }),
 
-/***/ 7066:
-/***/ (function(module) {
-
-/**
- * Created by maurice on 9/17/2015.
- */
-
-(function (root, factory) {
-    if (typeof define === "function" && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (true) {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {}
-})(this, function () {
-    "use strict";
-
-    var defaults = {
-        delay: 100,
-    };
-
-    function execute(config, cb) {
-        var count = 0;
-
-        while (true) {
-            try {
-                return cb({ count: count });
-            } catch (ex) {
-                if (count < config.count && config.handleFn(ex)) {
-                    config.loggerFn(ex);
-                    count++;
-                } else {
-                    throw ex;
-                }
-            }
-        }
-    }
-
-    function executeForPromise(config, cb) {
-        var count = 0;
-
-        return new Promise(function (resolve, reject) {
-            function execute() {
-                var original = cb({ count: count });
-
-                original.then(
-                    function (e) {
-                        resolve(e);
-                    },
-                    function (e) {
-                        if (count < config.count && config.handleFn(e)) {
-                            config.loggerFn(e);
-                            count++;
-                            execute();
-                        } else {
-                            reject(e);
-                        }
-                    }
-                );
-            }
-
-            execute();
-        });
-    }
-
-    function executeForPromiseWithDelay(config, cb) {
-        var count = 0;
-
-        return new Promise(function (resolve, reject) {
-            function execute() {
-                var original = cb({ count: count });
-
-                original.then(
-                    function (e) {
-                        resolve(e);
-                    },
-                    function (e) {
-                        var delay = config.delays.shift();
-
-                        if (delay && config.handleFn(e)) {
-                            config.loggerFn(e);
-                            count++;
-                            setTimeout(execute, delay);
-                        } else {
-                            reject(e);
-                        }
-                    }
-                );
-            }
-
-            execute();
-        });
-    }
-
-    function executeForNode(config, fn, callback) {
-        var count = 0;
-
-        function internalCallback(err, data) {
-            if (err && count < config.count && config.handleFn(err)) {
-                config.loggerFn(err);
-                count++;
-                fn(internalCallback, { count: count });
-            } else {
-                callback(err, data);
-            }
-        }
-
-        fn(internalCallback, { count: count });
-    }
-
-    function executeForNodeWithDelay(config, fn, callback) {
-        var count = 0;
-
-        function internalCallback(err, data) {
-            var delay = config.delays.shift();
-            if (err && delay && config.handleFn(err)) {
-                config.loggerFn(err);
-                count++;
-                setTimeout(function () {
-                    fn(internalCallback, { count: count });
-                }, delay);
-            } else {
-                callback(err, data);
-            }
-        }
-
-        fn(internalCallback, { count: count });
-    }
-
-    function delayCountToDelays(count) {
-        var delays = [],
-            delay = defaults.delay;
-
-        for (var i = 0; i < count; i++) {
-            delays.push(delay);
-            delay = 2 * delay;
-        }
-
-        return delays;
-    }
-
-    var pollyFn = function () {
-        var config = {
-            count: 1,
-            delays: [defaults.delay],
-            handleFn: function () {
-                return true;
-            },
-            loggerFn: function (err) {},
-        };
-
-        return {
-            logger: function (loggerFn) {
-                if (typeof loggerFn === "function") {
-                    config.loggerFn = loggerFn;
-                }
-
-                return this;
-            },
-            handle: function (handleFn) {
-                if (typeof handleFn === "function") {
-                    config.handleFn = handleFn;
-                }
-
-                return this;
-            },
-            retry: function (count) {
-                if (typeof count === "number") {
-                    config.count = count;
-                }
-
-                return {
-                    execute: execute.bind(null, config),
-                    executeForPromise: executeForPromise.bind(null, config),
-                    executeForNode: executeForNode.bind(null, config),
-                };
-            },
-            waitAndRetry: function (delays) {
-                if (typeof delays === "number") {
-                    delays = delayCountToDelays(delays);
-                }
-
-                if (Array.isArray(delays)) {
-                    config.delays = delays;
-                }
-
-                return {
-                    executeForPromise: executeForPromiseWithDelay.bind(
-                        null,
-                        config
-                    ),
-                    executeForNode: executeForNodeWithDelay.bind(null, config),
-                };
-            },
-        };
-    };
-    pollyFn.defaults = defaults;
-
-    return pollyFn;
-});
-
-
-/***/ }),
-
 /***/ 3769:
 /***/ ((module, __unused_webpack_exports, __nccwpck_require__) => {
 
@@ -20437,7 +20230,6 @@ exports.Task = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(948));
 const core = __importStar(__nccwpck_require__(8163));
 const coreArtifact = __importStar(__nccwpck_require__(7981));
-const polly = __importStar(__nccwpck_require__(7066));
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 const moment = __importStar(__nccwpck_require__(7393));
@@ -20467,7 +20259,7 @@ class Task {
             }
             catch (err) {
                 core.error(err.message);
-                // core.setFailed((err as any).message);
+                core.setFailed(err.message);
             }
         });
     }
@@ -20542,47 +20334,51 @@ class Task {
     ensureSigningRequestCompleted(signingrequestId) {
         return __awaiter(this, void 0, void 0, function* () {
             // check for status update
-            const requestData = yield polly.default()
-                .waitAndRetry((0, utils_1.signingRequestStatusCheckdDelays)(MaxWaitingTimeForSigningRequestCompletionMs, MinDelayBetweenSigningRequestStatusChecksMs, MaxDelayBetweenSigningRequestStatusChecksMs))
-                .executeForPromise(() => __awaiter(this, void 0, void 0, function* () {
-                core.info('Checking SignPath signing request status...');
-                return yield axios_1.default
-                    .get(this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingrequestId), {
+            const requestData = yield ((0, utils_1.executeWithRetries)(() => __awaiter(this, void 0, void 0, function* () {
+                const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingrequestId);
+                const signingRequestDto = (yield axios_1.default
+                    .get(requestStatusUrl, {
                     responseType: "json",
                     headers: {
-                        Authorization: `Bearer ${this.signPathToken}`
+                        "Authorization": `Bearer ${this.signPathToken}`
                     }
+                })
+                    .then((response) => {
+                    const data = response.data;
+                    if (data && !data.isFinalStatus) {
+                        core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
+                        throw new Error('Retry signing request status check.');
+                    }
+                    return data;
                 })
                     .catch((e) => {
                     var _a;
                     core.error(`SignPath API call error: ${e.message}`);
                     if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
-                        throw new Error(e.response.data);
+                        throw new Error(JSON.stringify({
+                            'data': e.response.data
+                        }));
                     }
                     throw new Error(e.message);
-                })
-                    .then(response => {
-                    const data = response.data;
-                    if (data && !data.isFinalStatus) {
-                        core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
-                        throw new Error(`Status ${data.status} is not a final status, we need to check again.`);
-                    }
-                    return data;
-                })
-                    .catch(e => {
-                    core.info(e);
-                    throw e;
-                });
+                }));
+                return signingRequestDto;
+            }), MaxWaitingTimeForSigningRequestCompletionMs, MinDelayBetweenSigningRequestStatusChecksMs, MaxDelayBetweenSigningRequestStatusChecksMs)
+                .catch((e) => {
+                if (e.message.startsWith('{')) {
+                    const errorData = JSON.parse(e.message);
+                    return errorData.data;
+                }
+                throw e;
             }));
             core.info(`Signing request status is ${requestData.status}`);
             if (!requestData.isFinalStatus) {
                 const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
                 core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
-                throw new Error('The signing request is not completed.');
+                throw new Error(`The signing request is not completed. The current status is "${requestData.status}`);
             }
             else {
                 if (requestData.status !== "Completed") {
-                    throw new Error('The signing request is not completed.');
+                    throw new Error(`The signing request is not completed. The final status is "${requestData.status}.`);
                 }
             }
             return requestData;
@@ -20592,7 +20388,6 @@ class Task {
         return __awaiter(this, void 0, void 0, function* () {
             const workingDir = process.env.GITHUB_WORKSPACE;
             const fileName = `${this.artifactName}_signed.zip`;
-            const artifactFileName = `${this.artifactName}_signed`;
             const targetFilePath = path.join(workingDir, fileName);
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
             const writer = fs.createWriteStream(targetFilePath);
@@ -20627,32 +20422,49 @@ exports.Task = Task;
 /***/ }),
 
 /***/ 9586:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ (function(__unused_webpack_module, exports) {
 
 "use strict";
 
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.signingRequestStatusCheckdDelays = void 0;
-function signingRequestStatusCheckdDelays(maxTotalWaitngTimeMs, minDelayMs, maxDelayMs) {
-    const delays = [];
-    let totalDelay = 0;
-    let currentDelay = minDelayMs;
-    while (totalDelay < maxTotalWaitngTimeMs) {
-        // add nextDely
-        delays.push(currentDelay);
-        totalDelay += currentDelay;
-        // imncrease dely
-        currentDelay *= 2;
-        if (currentDelay === 0) {
-            currentDelay = 1;
+exports.executeWithRetries = void 0;
+/// function that retries promise calls with delays
+/// the delays are incremental and are calculated as follows:
+/// 1. start with minDelay
+/// 2. double the delay on each iteration
+/// 3. stop when maxTotalWaitngTimeMs is reached
+/// 4. if maxDelayMs is reached, use it for all subsequent calls
+function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayMs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const startTime = Date.now();
+        let delayMs = minDelayMs;
+        let result;
+        while (true) {
+            try {
+                result = yield promise();
+                break;
+            }
+            catch (err) {
+                if (Date.now() - startTime > maxTotalWaitngTimeMs) {
+                    throw err;
+                }
+                yield new Promise(resolve => setTimeout(resolve, delayMs));
+                delayMs = Math.min(delayMs * 2, maxDelayMs);
+            }
         }
-        if (currentDelay > maxDelayMs) {
-            currentDelay = maxDelayMs;
-        }
-    }
-    return delays;
+        return result;
+    });
 }
-exports.signingRequestStatusCheckdDelays = signingRequestStatusCheckdDelays;
+exports.executeWithRetries = executeWithRetries;
 
 
 /***/ }),

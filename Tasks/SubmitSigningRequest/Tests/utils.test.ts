@@ -1,15 +1,21 @@
 import { assert, expect } from "chai";
-import { signingRequestStatusCheckdDelays } from "../utils";
-
-it('test delays generation', async () => {
-
-    // expected result 10 + 20 + 30
-    let delays = signingRequestStatusCheckdDelays(60, 10, 30);
-    expect(delays).to.eql([10, 20, 30]);
+import { executeWithRetries } from "../utils";
 
 
-    // expected result 10 + 20 + 30
-    delays = signingRequestStatusCheckdDelays(60, 0, 30);
-    expect(delays).to.eql([0, 1, 2, 4, 8, 16, 30]);
+/// write a unit tets for this function
+it('test execute with retries', async () => {
+    let counter = 0;
+    const promise = async () => {
+        counter++;
+
+        if (counter < 3) {
+            throw new Error('error');
+        }
+
+        return counter * 2;
+    };
+
+    const result = await executeWithRetries(promise, 100, 1, 3);
+
+    expect(result).to.eq(6);
 });
-
