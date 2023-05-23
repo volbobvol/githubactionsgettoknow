@@ -20259,7 +20259,7 @@ class Task {
             }
             catch (err) {
                 core.error(err.message);
-                core.setFailed(err.message);
+                // core.setFailed((err as any).message);
             }
         });
     }

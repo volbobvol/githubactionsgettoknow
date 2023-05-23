@@ -28,7 +28,7 @@ jobs:
         ArtifactConfigurationSlug: 'testzip'
         ArtifactName: 'artifact-name'
         GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Sleep for 3000 seconds
-    #   run: Start-Sleep -s 3000
-    #   shell: powershell
+    - name: Sleep for 3000 seconds
+      run: Start-Sleep -s 3000
+      shell: powershell
 

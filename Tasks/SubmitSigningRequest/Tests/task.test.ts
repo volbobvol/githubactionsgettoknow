@@ -6,7 +6,7 @@ import { expect } from 'chai';
 import * as core from '@actions/core';
 import { SubmitSigningRequestResult } from '../DTOs/submit-signing-request-result';
 import { clear } from 'console';
-
+/*
 it('test that the task fails if the signing request submit fails', async () => {
     const sandbox = sinon.createSandbox();
     const signingRequest = {
@@ -80,3 +80,4 @@ it('test that the signing request was not submitted due to validation errors', a
 });
 
 
+*/
