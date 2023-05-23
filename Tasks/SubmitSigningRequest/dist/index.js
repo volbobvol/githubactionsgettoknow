@@ -20259,7 +20259,7 @@ class Task {
             }
             catch (err) {
                 core.error(err.message);
-                // core.setFailed((err as any).message);
+                core.setFailed(err.message);
             }
         });
     }
@@ -20450,6 +20450,7 @@ function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayM
         let result;
         while (true) {
             try {
+                console.log(`Executing with delay ${delayMs} ms`);
                 result = yield promise();
                 break;
             }

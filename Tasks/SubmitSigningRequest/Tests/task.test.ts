@@ -2,13 +2,15 @@ import { Task } from '../task';
 import axios from 'axios';
 import sinon from 'sinon';
 import assert from 'assert';
-import { expect } from 'chai';
 import * as core from '@actions/core';
-import { SubmitSigningRequestResult } from '../DTOs/submit-signing-request-result';
-import { clear } from 'console';
-/*
+
+const sandbox = sinon.createSandbox();
+
+afterEach(() => {
+    sandbox.restore();
+});
+
 it('test that the task fails if the signing request submit fails', async () => {
-    const sandbox = sinon.createSandbox();
     const signingRequest = {
         error: 'Failed'
     };
@@ -20,12 +22,10 @@ it('test that the task fails if the signing request submit fails', async () => {
     await task.run();
     assert.equal(setFailedStub.calledOnce, true);
     assert.equal(errorLogStub.called, true);
-    sandbox.restore();
 });
 
 
 it('test that the task fails if the signing request has "Failed" as a final status', async () => {
-    const sandbox = sinon.createSandbox();
     sandbox.stub(core, 'getInput').returns("test");
     const setFailedStub = sandbox.stub(core, 'setFailed')
         .withArgs(sinon.match((value:any) => {
@@ -42,11 +42,9 @@ it('test that the task fails if the signing request has "Failed" as a final stat
     await task.run();
     assert.equal(setFailedStub.calledOnce, true, 'setFailed should be called once');
     assert.equal(errorLogStub.called, true, 'error should be called');
-    sandbox.restore();
 });
 
 it('test that the signing request was not submitted due to validation errors', async () => {
-    const sandbox = sinon.createSandbox();
     const signingRequest = {
         validationResult: {
             errors: [
@@ -76,8 +74,4 @@ it('test that the signing request was not submitted due to validation errors', a
     assert.equal(setFailedStub.calledOnce, true);
     assert.equal(errorLogStub.called, true);
     assert.equal(infoLogStub.called, true);
-    sandbox.restore();
 });
-
-
-*/

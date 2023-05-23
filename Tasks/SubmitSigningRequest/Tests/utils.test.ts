@@ -1,8 +1,7 @@
 import { assert, expect } from "chai";
 import { executeWithRetries } from "../utils";
 
-
-it('test execute with retries', async () => {
+it('test execute with retries, eventually successful', async () => {
     let counter = 0;
     const promise = async () => {
         counter++;
@@ -11,12 +10,12 @@ it('test execute with retries', async () => {
             throw new Error('error');
         }
 
-        return counter * 2;
+        return 'success';
     };
 
     const result = await executeWithRetries(promise, 100, 1, 3);
 
-    expect(result).to.eq(6);
+    expect(result).to.eq('success');
 });
 
 /// the test checks that error will be thrown if the promise always fails
@@ -26,7 +25,7 @@ it('test execute with retries - error', async () => {
     };
 
     try {
-        await executeWithRetries(promise, 100, 1, 3);
+        await executeWithRetries(promise, 25, 1, 3);
         assert.fail('error should be thrown');
     }
     catch (err: any) {

@@ -12,6 +12,7 @@ export async function executeWithRetries<RES>(
     let result: RES;
     while (true) {
         try {
+            console.log(`Executing with delay ${delayMs} ms`);
             result = await promise();
             break;
         }
