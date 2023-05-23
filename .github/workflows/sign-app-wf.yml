@@ -5,6 +5,7 @@ on:
     workflows: [Build App]
     types: [completed]
   workflow_dispatch:
+permissions: read-all
 
 jobs:
 
