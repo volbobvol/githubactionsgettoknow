@@ -35,3 +35,8 @@ jobs:
       with: 
         name: artifact-name
         path: "TestApp/TestApp/program.cs"
+    - name: Override an artifact
+      uses: actions/upload-artifact@v3
+      with: 
+        name: artifact-name
+        path: "TestApp/TestApp/TestApp.sln"
