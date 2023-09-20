@@ -25,33 +25,13 @@ jobs:
       with:
         fetch-depth: 0
 
-    # Install the .NET Core workload
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
-
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
-
-     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    - name: build app
-      run: msbuild $env:Solution_Name
-      env:
-        Configuration: ${{ matrix.configuration }}
     - name: zip
       uses: vimtor/action-zip@v1
       with:
         files: "TestApp/TestApp/bin/Debug/net7.0"
         dest: result.zip
     - name: Use the Upload Artifact GitHub Action
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v3
       with: 
         name: artifact-name
-        path: result.zip
+        path: "TestApp/TestApp/program.cs"

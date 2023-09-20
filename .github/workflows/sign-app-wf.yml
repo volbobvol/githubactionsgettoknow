@@ -1,10 +1,10 @@
 name: Sign App
 
-on:
-  workflow_run:
-    workflows: [Build App]
-    types: [completed]
-  workflow_dispatch:
+# on:
+#   workflow_run:
+#     workflows: [Build App]
+#     types: [completed]
+#   workflow_dispatch:
 permissions:
   actions: read
   contents: write
