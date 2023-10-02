@@ -10,7 +10,7 @@ export class SignPathUrlBuilder {
 
     buildSubmitSigningRequestUrl(): string {
         return this.signPathGithHbConnectorBaseUrl  + '/api/sign';
-    } 
+    }
 
     buildGetSigningRequestUrl(organizationId: string, signingRequestId: string): string {
         return this.signPathBaseUrl  + `/API/v1/${encodeURIComponent(organizationId)}/SigningRequests/${encodeURIComponent(signingRequestId)}`;
@@ -22,5 +22,4 @@ export class SignPathUrlBuilder {
         }
         return text;
     }
-
 }
