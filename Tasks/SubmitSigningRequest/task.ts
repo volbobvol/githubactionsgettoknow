@@ -7,7 +7,7 @@ export class Task {
     urlBuilder: SignPathUrlBuilder;
 
     constructor () {
-        this.urlBuilder = new SignPathUrlBuilder(this.signPathApiUrl, this.signPathConnectorUrl);
+        this.urlBuilder = new SignPathUrlBuilder(this.signPathConnectorUrl);
     }
 
     async run() {
