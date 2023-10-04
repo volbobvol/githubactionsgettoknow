@@ -23,9 +23,9 @@ jobs:
        with:
          SignPathconnectorUrl: 'https://5tx555f2-44353.euw.devtunnels.ms'
          CIUserToken: ${{ secrets.CI_USER_TOKEN }}
-         OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
-         ProjectSlug: 'Azure_DevOps_Integration'
-         SigningPolicySlug: 'SigningPolicy'
+         OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+         ProjectSlug: 'GitHubTest'
+         SigningPolicySlug: 'TestGithubSP'
          GitHubToken: ${{ secrets.USER_TOKEN }}
-         ArtifactConfigurationSlug: 'testzip'
+         ArtifactConfigurationSlug: 'initial'
          ArtifactName: 'artifact-name'
