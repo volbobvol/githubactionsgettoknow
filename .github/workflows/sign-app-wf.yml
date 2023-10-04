@@ -26,6 +26,5 @@ jobs:
          OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
          ProjectSlug: 'GitHubTest'
          SigningPolicySlug: 'TestGithubSP'
-         GitHubToken: ${{ secrets.USER_TOKEN }}
          ArtifactConfigurationSlug: 'initial'
          ArtifactName: 'artifact-name'

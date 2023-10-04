@@ -81,7 +81,6 @@ export class Task {
             gitHubRepository: process.env.GITHUB_REPOSITORY,
             gitHubApiUrl: process.env.GITHUB_API_URL,
             gitHubWorkflowRunId: this.workflowRunId,
-            gitHubToken: this.gitHubToken,
             gitHubWorkflowSha: this.WorkflowSha
         };
 
