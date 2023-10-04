@@ -37,10 +37,6 @@ export class Task {
         return core.getInput('CIUserToken', { required: true });
     }
 
-    get gitHubToken(): string {
-        return core.getInput('GitHubToken', { required: true });
-    }
-
     get projectSlug(): string {
         return core.getInput('ProjectSlug', { required: true });
     }
@@ -55,14 +51,6 @@ export class Task {
 
     get workflowRunId(): string {
         return core.getInput('WorkflowRunId', { required: true });
-    }
-
-    get workflowId(): string {
-        return core.getInput('WorkflowId', { required: true });
-    }
-
-    get WorkflowSha(): string {
-        return core.getInput('WorkflowSha', { required: true });
     }
 
     private async submitSigningRequest (): Promise<string> {
@@ -80,8 +68,7 @@ export class Task {
 
             gitHubRepository: process.env.GITHUB_REPOSITORY,
             gitHubApiUrl: process.env.GITHUB_API_URL,
-            gitHubWorkflowRunId: this.workflowRunId,
-            gitHubWorkflowSha: this.WorkflowSha
+            gitHubWorkflowRunId: this.workflowRunId
         };
 
         // call the signPath API to submit the signing request

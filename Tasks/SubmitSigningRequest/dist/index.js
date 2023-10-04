@@ -2803,9 +2803,6 @@ class Task {
     get signPathToken() {
         return core.getInput('CIUserToken', { required: true });
     }
-    get gitHubToken() {
-        return core.getInput('GitHubToken', { required: true });
-    }
     get projectSlug() {
         return core.getInput('ProjectSlug', { required: true });
     }
@@ -2817,12 +2814,6 @@ class Task {
     }
     get workflowRunId() {
         return core.getInput('WorkflowRunId', { required: true });
-    }
-    get workflowId() {
-        return core.getInput('WorkflowId', { required: true });
-    }
-    get WorkflowSha() {
-        return core.getInput('WorkflowSha', { required: true });
     }
     submitSigningRequest() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2837,8 +2828,7 @@ class Task {
                 signPathArtifactConfigurationSlug: this.artifactConfigurationSlug,
                 gitHubRepository: process.env.GITHUB_REPOSITORY,
                 gitHubApiUrl: process.env.GITHUB_API_URL,
-                gitHubWorkflowRunId: this.workflowRunId,
-                gitHubWorkflowSha: this.WorkflowSha
+                gitHubWorkflowRunId: this.workflowRunId
             };
             // call the signPath API to submit the signing request
             const response = (yield axios_1.default

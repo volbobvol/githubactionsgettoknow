@@ -23,20 +23,10 @@ inputs:
   ArtifactName:
     description: 'Name of the artifact to sign'
     required: true
-  GitHubToken:
-    description: 'GitHub access token'
-  WorkflowId:
-    description: 'Workflow ID where the artifact requiring a signature was generated'
-    required: true
-    default: ${{ github.event.workflow_run.workflow_id }}
   WorkflowRunId:
     description: 'Workflow run ID where the artifact requiring a signature was generated'
     required: true
     default: ${{ github.event.workflow_run.id }}
-  WorkflowSha:
-    description: 'The SHA of the commit.'
-    required: true
-    default: ${{ github.event.workflow_run.head_sha }}
 
 runs:
   using: 'node16'
