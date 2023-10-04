@@ -29,10 +29,6 @@ export class Task {
         return core.getInput('ArtifactName', { required: true });
     }
 
-    get signPathApiUrl(): string {
-        return core.getInput('SignPathApiUrl', { required: true });
-    }
-
     get organizationId(): string {
         return core.getInput('OrganizationId', { required: true });
     }
@@ -65,17 +61,13 @@ export class Task {
         return core.getInput('WorkflowId', { required: true });
     }
 
+    get WorkflowSha(): string {
+        return core.getInput('WorkflowSha', { required: true });
+    }
+
     private async submitSigningRequest (): Promise<string> {
 
         core.info('Submitting the signing request to SignPath CI connector...');
-
-
-        core.info(`workflowId ${core.getInput('WorkflowId', { required: true })}`);
-        core.info(`workflowRunId ${core.getInput('WorkflowRunId', { required: true })}`);
-        core.info(`data ${core.getInput('Data', { required: true })}`);
-
-
-        return Promise.resolve("123");
 
         // prepare the payload
         const submitRequestPayload = {
@@ -90,11 +82,8 @@ export class Task {
             gitHubApiUrl: process.env.GITHUB_API_URL,
             gitHubWorkflowRunId: this.workflowRunId,
             gitHubToken: this.gitHubToken,
+            gitHubWorkflowSha: this.WorkflowSha
         };
-
-
-
-
 
         // call the signPath API to submit the signing request
         const response = (await axios
