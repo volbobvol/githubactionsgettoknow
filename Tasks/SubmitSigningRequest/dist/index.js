@@ -9,17 +9,12 @@
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.SignPathUrlBuilder = void 0;
 class SignPathUrlBuilder {
-    constructor(signPathBaseUrl, signPathGithHbConnectorBaseUrl) {
-        this.signPathBaseUrl = signPathBaseUrl;
+    constructor(signPathGithHbConnectorBaseUrl) {
         this.signPathGithHbConnectorBaseUrl = signPathGithHbConnectorBaseUrl;
-        this.signPathBaseUrl = this.trimSlash(this.signPathBaseUrl);
         this.signPathGithHbConnectorBaseUrl = this.trimSlash(this.signPathGithHbConnectorBaseUrl);
     }
     buildSubmitSigningRequestUrl() {
         return this.signPathGithHbConnectorBaseUrl + '/api/sign';
-    }
-    buildGetSigningRequestUrl(organizationId, signingRequestId) {
-        return this.signPathBaseUrl + `/API/v1/${encodeURIComponent(organizationId)}/SigningRequests/${encodeURIComponent(signingRequestId)}`;
     }
     trimSlash(text) {
         if (text && text[text.length - 1] === '/') {
@@ -2782,7 +2777,7 @@ const core = __importStar(__nccwpck_require__(8163));
 const signpath_url_builder_1 = __nccwpck_require__(4747);
 class Task {
     constructor() {
-        this.urlBuilder = new signpath_url_builder_1.SignPathUrlBuilder(this.signPathApiUrl, this.signPathConnectorUrl);
+        this.urlBuilder = new signpath_url_builder_1.SignPathUrlBuilder(this.signPathConnectorUrl);
     }
     run() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -2823,12 +2818,19 @@ class Task {
     get artifactConfigurationSlug() {
         return core.getInput('ArtifactConfigurationSlug', { required: true });
     }
-    get runId() {
-        return core.getInput('RunId', { required: true });
+    get workflowRunId() {
+        return core.getInput('WorkflowRunId', { required: true });
+    }
+    get workflowId() {
+        return core.getInput('WorkflowId', { required: true });
     }
     submitSigningRequest() {
         return __awaiter(this, void 0, void 0, function* () {
             core.info('Submitting the signing request to SignPath CI connector...');
+            core.info(`workflowId ${core.getInput('WorkflowId', { required: true })}`);
+            core.info(`workflowRunId ${core.getInput('WorkflowRunId', { required: true })}`);
+            core.info(`data ${core.getInput('Data', { required: true })}`);
+            return Promise.resolve("123");
             // prepare the payload
             const submitRequestPayload = {
                 ciUserToken: this.signPathToken,
@@ -2839,7 +2841,7 @@ class Task {
                 signPathArtifactConfigurationSlug: this.artifactConfigurationSlug,
                 gitHubRepository: process.env.GITHUB_REPOSITORY,
                 gitHubApiUrl: process.env.GITHUB_API_URL,
-                gitHubWorkflowRunId: this.runId,
+                gitHubWorkflowRunId: this.workflowRunId,
                 gitHubToken: this.gitHubToken,
             };
             // call the signPath API to submit the signing request
