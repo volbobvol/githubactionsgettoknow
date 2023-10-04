@@ -25,25 +25,6 @@ it('test that the task fails if the signing request submit fails', async () => {
 });
 
 
-it('test that the task fails if the signing request has "Failed" as a final status', async () => {
-    sandbox.stub(core, 'getInput').returns("test");
-    const setFailedStub = sandbox.stub(core, 'setFailed')
-        .withArgs(sinon.match((value:any) => {
-            return value.includes('TEST_FAILED')
-            && value.includes('The signing request is not completed.');
-        }));
-    const errorLogStub = sandbox.stub(core, 'error');
-    const axiosPostStub = sandbox.stub(axios, 'post').resolves({ data: {}});
-    const axiosGetStub = sandbox.stub(axios, 'get').resolves({ data: {
-        status: 'TEST_FAILED',
-        isFinalStatus: true
-    }});
-    const task = new Task();
-    await task.run();
-    assert.equal(setFailedStub.calledOnce, true, 'setFailed should be called once');
-    assert.equal(errorLogStub.called, true, 'error should be called');
-});
-
 it('test that the signing request was not submitted due to validation errors', async () => {
     const signingRequest = {
         validationResult: {

@@ -18,23 +18,13 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Group of log lines
-        run: |
-            echo "::group::My title"
-            echo "${{ github.event.workflow_run.id }}"
-            echo "::endgroup::"
-    # - name: Run SubmitSigningRequest
-    #   uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
-    #   with:
-    #     SignPathconnectorUrl: 'http://ciconnector-new.westeurope.cloudapp.azure.com'
-    #     CIUserToken: ${{ secrets.CI_USER_TOKEN }}
-    #     OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
-    #     ProjectSlug: 'Azure_DevOps_Integration'
-    #     SigningPolicySlug: 'SigningPolicy'
-    #     ArtifactConfigurationSlug: 'testzip'
-    #     ArtifactName: 'artifact-name'
-    #     GitHubToken: ${{ secrets.GITHUB_TOKEN }}
-    # - name: Sleep for 3000 seconds
-    #   run: Start-Sleep -s 3000
-    #   shell: powershell
-
+     - name: Run SubmitSigningRequest
+       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
+       with:
+         SignPathconnectorUrl: 'http://ciconnector-new.westeurope.cloudapp.azure.com'
+         CIUserToken: ${{ secrets.CI_USER_TOKEN }}
+         OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
+         ProjectSlug: 'Azure_DevOps_Integration'
+         SigningPolicySlug: 'SigningPolicy'
+         ArtifactConfigurationSlug: 'testzip'
+         ArtifactName: 'artifact-name'

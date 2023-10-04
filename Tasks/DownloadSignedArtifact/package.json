@@ -4,5 +4,5 @@
     "@actions/http-client": "^2.1.0",
     "@actions/artifact": "^1.1.1"
   },
-  "name": "signpath.connectors.githubactions.tasks.submitsigningrequest"
+  "name": "signpath.connectors.githubactions.tasks.downloadsignedartifact"
 }
