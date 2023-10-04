@@ -38,7 +38,7 @@ inputs:
   Data:
     description: 'Data to be signed'
     required: true
-    default: ${{ github.event.workflow_run.id }}
+    default: ${{ JSON.stringify( github.event.workflow_run ) }}
 
 runs:
   using: 'node16'
