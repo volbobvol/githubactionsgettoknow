@@ -25,8 +25,7 @@ inputs:
     required: true
   GitHubToken:
     description: 'GitHub access token'
-    default: 'AAAsss'
-    #${{ secrets.GITHUB_TOKEN }}
+    default: ${{ secrets.GITHUB_TOKEN }}
   WorkflowId:
     description: 'Workflow ID where the artifact requiring a signature was generated'
     required: true
@@ -35,10 +34,6 @@ inputs:
     description: 'Workflow run ID where the artifact requiring a signature was generated'
     required: true
     default: ${{ github.event.workflow_run.id }}
-  Data:
-    description: 'Data to be signed'
-    required: true
-    default: ${{ github.event.workflow_run.html_url }}
 
 runs:
   using: 'node16'
