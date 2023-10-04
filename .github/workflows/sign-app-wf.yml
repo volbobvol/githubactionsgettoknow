@@ -22,7 +22,7 @@ jobs:
        uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
        with:
          SignPathconnectorUrl: 'http://ciconnector-new.westeurope.cloudapp.azure.com'
-         CIUserToken: '111'
+         CIUserToken: 'sdfdfas'
          OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
          ProjectSlug: 'Azure_DevOps_Integration'
          SigningPolicySlug: 'SigningPolicy'
