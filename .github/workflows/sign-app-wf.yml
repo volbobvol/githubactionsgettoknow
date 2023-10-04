@@ -26,6 +26,6 @@ jobs:
          OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
          ProjectSlug: 'Azure_DevOps_Integration'
          SigningPolicySlug: 'SigningPolicy'
-         GitHubToken: ${{ secrets.GITHUB_TOKEN }}
+         GitHubToken: ${{ secrets.USER_TOKEN }}
          ArtifactConfigurationSlug: 'testzip'
          ArtifactName: 'artifact-name'
