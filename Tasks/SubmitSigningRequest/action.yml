@@ -25,7 +25,6 @@ inputs:
     required: true
   GitHubToken:
     description: 'GitHub access token'
-    default: ${{ secrets.GITHUB_TOKEN }}
   WorkflowId:
     description: 'Workflow ID where the artifact requiring a signature was generated'
     required: true
