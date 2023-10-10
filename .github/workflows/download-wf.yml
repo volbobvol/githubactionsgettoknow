@@ -1,8 +1,12 @@
 name: Download Artifact
 
 on:
-  repository_dispatch:
-    types: [trigger-workflow]
+  workflow_dispatch:
+    inputs:
+      argument:
+        description: 'Person to greet'
+        required: true
+        default: 'Mona the Octocat'
 
 jobs:
 
