@@ -9,8 +9,7 @@ jobs:
   download:
 
     runs-on: windows-latest
-
-    steps:
-     - env:
+    env:
           MESSAGE: ${{ github.event.client_payload.argument }}
-        run: echo $MESSAGE
+    steps:
+       - run: echo $MESSAGE
