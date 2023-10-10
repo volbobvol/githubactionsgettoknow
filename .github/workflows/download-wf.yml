@@ -1,8 +1,9 @@
 name: Download Artifact
 
-permissions:
-  actions: read
-  contents: write
+on:
+  repository_dispatch:
+    types: [trigger-workflow]
+
 jobs:
 
   download:
