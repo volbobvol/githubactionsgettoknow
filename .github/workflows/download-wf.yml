@@ -13,7 +13,5 @@ jobs:
   download:
 
     runs-on: windows-latest
-    env:
-          MESSAGE: ${{ github.event.client_payload.argument }}
     steps:
-       - run: echo $MESSAGE
+       - run: echo ${{ github.event.client_payload.argument }}
