@@ -27,6 +27,9 @@ inputs:
     description: 'Workflow run ID where the artifact requiring a signature was generated'
     required: true
     default: ${{ github.event.workflow_run.id }}
+  DownloadArtifactWorkflowName:
+    description: 'Name of the workflow that contains task for downloading the signed artifact from SignPath'
+    required: false
 
 runs:
   using: 'node16'

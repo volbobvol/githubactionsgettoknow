@@ -28,3 +28,4 @@ jobs:
          SigningPolicySlug: 'TestGithubSP'
          ArtifactConfigurationSlug: 'initial'
          ArtifactName: 'artifact-name'
+         DownloadArtifactWorkflowName: 'Download Artifact'

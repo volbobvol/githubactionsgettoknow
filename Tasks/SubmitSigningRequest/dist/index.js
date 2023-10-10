@@ -2815,6 +2815,9 @@ class Task {
     get workflowRunId() {
         return core.getInput('WorkflowRunId', { required: true });
     }
+    get downloadArtifactWorkflowName() {
+        return core.getInput('DownloadArtifactWorkflowName', { required: false });
+    }
     submitSigningRequest() {
         return __awaiter(this, void 0, void 0, function* () {
             core.info('Submitting the signing request to SignPath CI connector...');
@@ -2828,7 +2831,8 @@ class Task {
                 signPathArtifactConfigurationSlug: this.artifactConfigurationSlug,
                 gitHubRepository: process.env.GITHUB_REPOSITORY,
                 gitHubApiUrl: process.env.GITHUB_API_URL,
-                gitHubWorkflowRunId: this.workflowRunId
+                gitHubWorkflowRunId: this.workflowRunId,
+                gitHubDownloadArtifactWorkflowName: this.downloadArtifactWorkflowName
             };
             // call the signPath API to submit the signing request
             const response = (yield axios_1.default

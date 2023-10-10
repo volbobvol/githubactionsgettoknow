@@ -1,0 +1,15 @@
+name: Download Artifact
+
+permissions:
+  actions: read
+  contents: write
+jobs:
+
+  download:
+
+    runs-on: windows-latest
+
+    steps:
+     - env:
+          MESSAGE: ${{ github.event.client_payload.argument }}
+        run: echo $MESSAGE
