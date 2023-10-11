@@ -9,6 +9,14 @@ export class Task {
 
     async run() {
         try {
+
+            if(this.signingRequestStatus !== 'Completed') {
+                core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
+                core.info(`See the request details here: ${this.signingRequestUiUrl}.`);
+                core.setFailed(`The signing request is not completed yet.`);
+                return;
+            }
+
             const signedArtifactFilePath = await this.dowloadTheSigninedArtifact();
             await this.logArtifactFileStat(signedArtifactFilePath);
 
@@ -42,6 +50,14 @@ export class Task {
 
     get artifactName(): string {
         return core.getInput('ArtifactName', { required: true });
+    }
+
+    get signingRequestUiUrl(): string {
+        return core.getInput('SigningRequestUiUrl', { required: true });
+    }
+
+    get signingRequestStatus(): string {
+        return core.getInput('SigningRequestStatus', { required: true });
     }
 
     async dowloadTheSigninedArtifact(): Promise<string> {

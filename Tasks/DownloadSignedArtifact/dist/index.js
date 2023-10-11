@@ -9556,6 +9556,12 @@ class Task {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
+                if (this.signingRequestStatus !== 'Completed') {
+                    core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
+                    core.info(`See the request details here: ${this.signingRequestUiUrl}.`);
+                    core.setFailed(`The signing request is not completed yet.`);
+                    return;
+                }
                 const signedArtifactFilePath = yield this.dowloadTheSigninedArtifact();
                 yield this.logArtifactFileStat(signedArtifactFilePath);
                 if (this.artifactName) {
@@ -9582,6 +9588,12 @@ class Task {
     }
     get artifactName() {
         return core.getInput('ArtifactName', { required: true });
+    }
+    get signingRequestUiUrl() {
+        return core.getInput('SigningRequestUiUrl', { required: true });
+    }
+    get signingRequestStatus() {
+        return core.getInput('SigningRequestStatus', { required: true });
     }
     dowloadTheSigninedArtifact() {
         return __awaiter(this, void 0, void 0, function* () {

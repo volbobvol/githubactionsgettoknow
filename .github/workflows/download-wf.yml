@@ -3,10 +3,15 @@ name: Download Artifact
 on:
   workflow_dispatch:
     inputs:
-      argument:
-        description: 'Person to greet'
+      artifactDownloadUrl:
+        description: 'Signed artifact download URL'
         required: true
-        default: 'Mona the Octocat'
+      signingRequestUiUrl:
+        description: 'SignPath signing request URL'
+        required: true
+      signingRequestStatus:
+        description: 'SignPath signing request status'
+        required: true
 
 jobs:
 
@@ -14,4 +19,9 @@ jobs:
 
     runs-on: windows-latest
     steps:
-       - run: echo "${{ github.event.inputs.argument }}"
+     - name: Run DownloadSignedArtifact
+       uses: volbobvol/githubactionsgettoknow/Tasks/DownloadSignedArtifact@main
+       with:
+         AuthenticationToken: ${{ secrets.CI_USER_TOKEN }}
+         Target: 'signed-artifact-file-name'
+         ArtifactName: 'SignedArtifact'
