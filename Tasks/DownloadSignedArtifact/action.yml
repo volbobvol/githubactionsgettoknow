@@ -9,7 +9,7 @@ inputs:
     description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
   Target:
-    description: 'Target path to download artifact'
+    description: 'Target path to download artifact. If empty the filename from the signed aritifact will be used'
     required: false
   ArtifactName:
     description: 'Name for the signed artifact, if empty the task will only download the file to the filesystem'
