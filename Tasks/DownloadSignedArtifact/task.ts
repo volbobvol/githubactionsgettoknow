@@ -1,5 +1,6 @@
 import axios, { AxiosError } from 'axios';
 import * as core from '@actions/core';
+import * as github from '@actions/github';
 import * as coreArtifact from '@actions/artifact';
 import * as fs from 'fs';
 import * as filesize from 'filesize'
@@ -9,6 +10,10 @@ export class Task {
 
     async run() {
         try {
+
+            const payload = github.context.payload as any;
+            const jpasyload = JSON.stringify(payload, undefined, 2);
+            core.info(`The payload is ${jpasyload}`);
 
             if(this.signingRequestStatus !== 'Completed') {
                 core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
