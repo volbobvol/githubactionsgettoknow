@@ -32492,7 +32492,6 @@ class Task {
         return this.signingRequestData.signingRequestStatus;
     }
     dowloadTheSigninedArtifact() {
-        var _a;
         return __awaiter(this, void 0, void 0, function* () {
             core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
             const authorizationHeader = 'Bearer ' + this.authenticationToken;
@@ -32500,7 +32499,10 @@ class Task {
                 responseType: 'stream',
                 headers: { Authorization: authorizationHeader }
             });
-            const fileName = (_a = this.target) !== null && _a !== void 0 ? _a : this.getFileNameFromContentDisposition(response.data.headers['content-disposition']);
+            let fileName = this.target;
+            if (!fileName) {
+                fileName = this.getFileNameFromContentDisposition(response.headers['content-disposition']);
+            }
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${fileName} .`);
             const writer = fs.createWriteStream(fileName);
             response.data.pipe(writer);

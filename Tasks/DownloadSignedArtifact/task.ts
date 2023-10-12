@@ -77,7 +77,11 @@ export class Task {
             headers: { Authorization: authorizationHeader }
         });
 
-        const fileName = this.target ?? this.getFileNameFromContentDisposition(response.data.headers['content-disposition']);
+        let fileName = this.target;
+        if(!fileName) {
+          fileName = this.getFileNameFromContentDisposition(response.headers['content-disposition']);
+        }
+
         core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${fileName} .`);
         const writer = fs.createWriteStream(fileName);
         response.data.pipe(writer);
