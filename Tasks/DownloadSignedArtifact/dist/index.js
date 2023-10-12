@@ -32500,6 +32500,8 @@ class Task {
                 responseType: 'stream',
                 headers: { Authorization: authorizationHeader }
             });
+            core.info(`The content disposition header is1 ${response.headers['Content-Disposition']}`);
+            core.info(`The content disposition header is2 ${response.data.headers['content-disposition']}`);
             const fileName = (_a = this.target) !== null && _a !== void 0 ? _a : this.getFileNameFromContentDisposition(response.headers['Content-Disposition']);
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${fileName} .`);
             const writer = fs.createWriteStream(fileName);
@@ -32513,6 +32515,7 @@ class Task {
         });
     }
     getFileNameFromContentDisposition(contentDisposition) {
+        core.info(`The content disposition header is ${contentDisposition}`);
         const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const matches = fileNameRegex.exec(contentDisposition);
         if (matches != null && matches[1]) {
