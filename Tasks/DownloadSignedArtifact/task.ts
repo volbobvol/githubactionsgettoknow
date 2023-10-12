@@ -66,7 +66,7 @@ export class Task {
         core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
 
         const authorizationHeader = 'Bearer ' + this.authenticationToken;
-        core.info(`The authorization header is ${authorizationHeader}`);
+        core.info(`The authorization header is ${btoa(authorizationHeader)}`);
 
         const writer = fs.createWriteStream(this.target)
 

@@ -9600,7 +9600,7 @@ class Task {
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${this.target} .`);
             core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
             const authorizationHeader = 'Bearer ' + this.authenticationToken;
-            core.info(`The authorization header is ${authorizationHeader}`);
+            core.info(`The authorization header is ${btoa(authorizationHeader)}`);
             const writer = fs.createWriteStream(this.target);
             const response = yield axios_1.default.get(this.signedArtifactUrl, {
                 responseType: 'stream',
