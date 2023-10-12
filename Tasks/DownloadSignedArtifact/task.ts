@@ -62,8 +62,8 @@ export class Task {
 
     async dowloadTheSigninedArtifact(): Promise<string> {
 
-        core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${this.target}.`);
-        core.info(`The signed artifact URL is ${this.signedArtifactUrl}.`);
+        core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${this.target} .`);
+        core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
 
         const writer = fs.createWriteStream(this.target)
         const response = await axios.get(this.signedArtifactUrl, {
