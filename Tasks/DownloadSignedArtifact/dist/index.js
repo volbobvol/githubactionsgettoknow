@@ -32480,10 +32480,10 @@ class Task {
         return core.getInput('AuthenticationToken', { required: true });
     }
     get target() {
-        return core.getInput('Target', { required: true });
+        return core.getInput('Target', { required: false });
     }
     get artifactName() {
-        return core.getInput('ArtifactName', { required: true });
+        return core.getInput('ArtifactName', { required: false });
     }
     get signingRequestUiUrl() {
         return this.signingRequestData.signingRequestUiUrl;

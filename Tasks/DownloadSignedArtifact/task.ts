@@ -51,11 +51,11 @@ export class Task {
     }
 
     get target(): string {
-        return core.getInput('Target', { required: true });
+        return core.getInput('Target', { required: false });
     }
 
     get artifactName(): string {
-        return core.getInput('ArtifactName', { required: true });
+        return core.getInput('ArtifactName', { required: false });
     }
 
     get signingRequestUiUrl(): string {
