@@ -77,10 +77,7 @@ export class Task {
             headers: { Authorization: authorizationHeader }
         });
 
-        core.info(`The content disposition header is1 ${response.headers['Content-Disposition']}`);
-        core.info(`The content disposition header is2 ${response.data.headers['content-disposition']}`);
-
-        const fileName = this.target ?? this.getFileNameFromContentDisposition(response.headers['Content-Disposition']);
+        const fileName = this.target ?? this.getFileNameFromContentDisposition(response.data.headers['content-disposition']);
         core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${fileName} .`);
         const writer = fs.createWriteStream(fileName);
         response.data.pipe(writer);
