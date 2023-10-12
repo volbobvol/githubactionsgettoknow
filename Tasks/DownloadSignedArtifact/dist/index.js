@@ -9598,6 +9598,7 @@ class Task {
     dowloadTheSigninedArtifact() {
         return __awaiter(this, void 0, void 0, function* () {
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${this.target}.`);
+            core.info(`The signed artifact URL is ${this.signedArtifactUrl}.`);
             const writer = fs.createWriteStream(this.target);
             const response = yield axios_1.default.get(this.signedArtifactUrl, {
                 responseType: 'stream',
