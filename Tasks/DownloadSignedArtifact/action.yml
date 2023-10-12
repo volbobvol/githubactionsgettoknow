@@ -10,7 +10,7 @@ inputs:
     required: true
   Target:
     description: 'Target path to download artifact'
-    required: true
+    required: false
   ArtifactName:
     description: 'Name for the signed artifact, if empty the task will only download the file to the filesystem'
     required: false

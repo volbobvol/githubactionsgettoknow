@@ -32492,23 +32492,33 @@ class Task {
         return this.signingRequestData.signingRequestStatus;
     }
     dowloadTheSigninedArtifact() {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${this.target} .`);
             core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
             const authorizationHeader = 'Bearer ' + this.authenticationToken;
-            const writer = fs.createWriteStream(this.target);
             const response = yield axios_1.default.get(this.signedArtifactUrl, {
                 responseType: 'stream',
                 headers: { Authorization: authorizationHeader }
             });
+            const fileName = (_a = this.target) !== null && _a !== void 0 ? _a : this.getFileNameFromContentDisposition(response.headers['Content-Disposition']);
+            core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${fileName} .`);
+            const writer = fs.createWriteStream(fileName);
             response.data.pipe(writer);
             yield new Promise((resolve, reject) => {
                 writer.on('finish', resolve);
                 writer.on('error', reject);
             });
             core.info("The signed artifact has been successfully downloaded from SignPath.");
-            return this.target;
+            return fileName;
         });
+    }
+    getFileNameFromContentDisposition(contentDisposition) {
+        const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+        const matches = fileNameRegex.exec(contentDisposition);
+        if (matches != null && matches[1]) {
+            return matches[1].replace(/['"]/g, '');
+        }
+        return 'signed-artifact.zip';
     }
     logArtifactFileStat(artifactPath) {
         return __awaiter(this, void 0, void 0, function* () {
