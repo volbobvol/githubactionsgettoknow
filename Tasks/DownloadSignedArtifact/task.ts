@@ -95,9 +95,6 @@ export class Task {
     }
 
     getFileNameFromContentDisposition(contentDisposition: string): string {
-
-        core.info(`The content disposition header is ${contentDisposition}`);
-
         const fileNameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
         const matches = fileNameRegex.exec(contentDisposition);
         if (matches != null && matches[1]) {
