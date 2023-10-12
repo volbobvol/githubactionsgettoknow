@@ -1,10 +1,10 @@
 name: 'DownloadSignedArtifact'
 description: ''
 inputs:
-  SignedArtifactUrl:
-    description: 'Signed artifact URL'
+  signingRequestData:
+    description: 'SignPath signing request data used by DownloadSignedArtifact action to download the signed artifact'
     required: true
-    default: ${{ github.event.inputs.artifactDownloadUrl }}
+    default: ${{ github.event.inputs.signingRequestData }}
   AuthenticationToken:
     description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
@@ -14,14 +14,6 @@ inputs:
   ArtifactName:
     description: 'Name for the signed artifact, if empty the task will only download the file to the filesystem'
     required: false
-  SigningRequestUiUrl:
-    description: 'SignPath signing request URL'
-    required: true
-    default: ${{ github.event.inputs.signingRequestUiUrl }}
-  SigningRequestStatus:
-    description: 'SignPath signing request status'
-    required: true
-    default: ${{ github.event.inputs.signingRequestStatus }}
 runs:
   using: 'node16'
   main: 'dist/index.js'

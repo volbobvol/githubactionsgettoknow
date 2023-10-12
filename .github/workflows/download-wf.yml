@@ -3,14 +3,8 @@ name: Download Artifact
 on:
   workflow_dispatch:
     inputs:
-      artifactDownloadUrl:
-        description: 'Signed artifact download URL'
-        required: true
-      signingRequestUiUrl:
-        description: 'SignPath signing request URL'
-        required: true
-      signingRequestStatus:
-        description: 'SignPath signing request status'
+      signingRequestData:
+        description: 'SignPath signing request data used by DownloadSignedArtifact action to download the signed artifact'
         required: true
 
 jobs:

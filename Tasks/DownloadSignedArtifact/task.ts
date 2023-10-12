@@ -1,19 +1,15 @@
 import axios, { AxiosError } from 'axios';
 import * as core from '@actions/core';
-import * as github from '@actions/github';
 import * as coreArtifact from '@actions/artifact';
 import * as fs from 'fs';
 import * as filesize from 'filesize'
 import * as path from 'path';
+import { SigningRequestData } from './DTOs/signing-request-data';
 
 export class Task {
 
     async run() {
         try {
-
-            const payload = github.context.payload as any;
-            const jpasyload = JSON.stringify(payload, undefined, 2);
-            core.info(`The payload is ${jpasyload}`);
 
             if(this.signingRequestStatus !== 'Completed') {
                 core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
@@ -41,8 +37,13 @@ export class Task {
         }
     }
 
+    get signingRequestData(): SigningRequestData {
+        const input = core.getInput('SigningRequestData', { required: true });
+        return JSON.parse(input) as SigningRequestData;
+    }
+
     get signedArtifactUrl(): string {
-        return core.getInput('SignedArtifactUrl', { required: true });
+        return this.signingRequestData.artifactDownloadUrl;
     }
 
     get authenticationToken(): string {
@@ -58,11 +59,11 @@ export class Task {
     }
 
     get signingRequestUiUrl(): string {
-        return core.getInput('SigningRequestUiUrl', { required: true });
+        return this.signingRequestData.signingRequestUiUrl;
     }
 
     get signingRequestStatus(): string {
-        return core.getInput('SigningRequestStatus', { required: true });
+        return this.signingRequestData.signingRequestStatus;
     }
 
     async dowloadTheSigninedArtifact(): Promise<string> {
@@ -73,7 +74,7 @@ export class Task {
         const authorizationHeader = 'Bearer ' + this.authenticationToken;
         const writer = fs.createWriteStream(this.target);
 
-        const response = await axios.get("https://webhook.site/29a0a17d-93b9-41f6-a7a0-48be9d4c50a6", {
+        const response = await axios.get(this.signedArtifactUrl, {
             responseType: 'stream',
             headers: { Authorization: authorizationHeader }
         });
