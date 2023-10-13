@@ -1,5 +1,5 @@
 name: 'SubmitSigningRequest'
-description: ''
+description: 'Submit the signing request to SignPath'
 inputs:
   SignPathConnectorUrl:
     description: 'GitHub Actions SignPath connector URL'

@@ -12,21 +12,16 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [Debug]
+        configuration: [Debug, Release]
 
     runs-on: windows-latest
 
-    env:
-      Solution_Name: TestApp/TestApp.sln
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+    - name: Create artifact file
+        run: echo "Build: ${{ matrix.configuration }}" > script.ps1
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with: 
-        name: artifact-name
-        path: "TestApp/MyScanner.ps1"
+        name: ${{ matrix.configuration }}-artifact
+        path: "script.ps1"
