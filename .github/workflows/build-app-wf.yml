@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Create artifact file
-      run: echo "Build: ${{ matrix.configuration }}. Created on: %date% %time%" > script.ps1
+      run: "echo \"Build: ${{ matrix.configuration }}. Created on: %date% %time%\" > script.ps1"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
