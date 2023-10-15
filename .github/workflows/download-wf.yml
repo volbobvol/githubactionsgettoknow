@@ -29,4 +29,4 @@ jobs:
       name: ${{ github.event.inputs.artifactContext }}
     steps:
       - name: Deploy artifact
-        run: "echo \"Deploy to ${{ env.ENV_NAME }} \""
+        run: "echo \"Deploy to ${{ vars.ENV_NAME }} \""
