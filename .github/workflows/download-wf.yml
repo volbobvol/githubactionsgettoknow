@@ -20,7 +20,7 @@ jobs:
        with:
          AuthenticationToken: ${{ secrets.CI_USER_TOKEN }}
          #Target: 'signed-artifact-file-name.zip'
-         #ArtifactName: 'SignedArtifact'
+         ArtifactName: 'SignedArtifact'
 
   deployment:
     runs-on: windows-latest
@@ -29,3 +29,5 @@ jobs:
     steps:
       - name: Deploy artifact
         run: "echo \"Deploy to ${{ secrets.SECRET_ENV_NAME }} \""
+      - name: DEBUG
+        run: "echo \"Debug [${{ github.event.inputs.artifactContext }}] \""
