@@ -1,4 +1,5 @@
 name: Download Artifact
+run-name: Deploy to ${{ github.event.inputs.artifactContext }}
 
 on:
   workflow_dispatch:
