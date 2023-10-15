@@ -29,6 +29,6 @@ jobs:
       name: ${{ github.event.inputs.artifactContext }}
     steps:
       - name: Deploy artifact
-        run: "echo \"Deploy to ${{ secrets.SECRET_ENV_NAME }} \""
+        run: "echo \"Deploy to ${{ env.ENV_NAME }} \""
       - name: DEBUG
         run: "echo \"Debug [${{ github.event.inputs.artifactContext }}] \""
