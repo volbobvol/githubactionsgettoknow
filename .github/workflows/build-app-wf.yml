@@ -20,7 +20,7 @@ jobs:
     - name: Create artifact file
       run: "echo \"Build: ${{ matrix.configuration }}. Created on: \" > script.ps1"
     - name: Append create date
-      run: "echo %date% %time% >> script.ps1"
+      run: "echo:| time >> script.ps1"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
