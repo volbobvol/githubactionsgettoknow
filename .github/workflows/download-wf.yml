@@ -26,9 +26,9 @@ jobs:
     runs-on: windows-latest
     needs: download
     environment: 
-      name: ${{ inputs.artifactContext }}
+      name: ${{ github.event.inputs.artifactContext }}
     steps:
       - name: Deploy artifact
         run: "echo \"Deploy to ${{ secrets.SECRET_ENV_NAME }} \""
       - name: DEBUG
-        run: "echo \"Debug [${{ inputs.artifactContext }}] \""
+        run: "echo \"Debug [${{ github.event.inputs.artifactContext }}] \""
