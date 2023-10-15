@@ -30,6 +30,9 @@ inputs:
   DownloadArtifactWorkflowName:
     description: 'Name of the workflow that contains task for downloading the signed artifact from SignPath'
     required: false
+  ArtifactContext:
+    description: 'Additional information that canbe be used in the download signed artifact workflow to identify the artifact creation context'
+    required: false
 
 runs:
   using: 'node16'

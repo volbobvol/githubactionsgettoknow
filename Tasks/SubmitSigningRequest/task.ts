@@ -57,6 +57,10 @@ export class Task {
         return core.getInput('DownloadArtifactWorkflowName', { required: false });
     }
 
+    get artifactContext(): string {
+        return core.getInput('ArtifactContext', { required: false });
+    }
+
     private async submitSigningRequest (): Promise<string> {
 
         core.info('Submitting the signing request to SignPath CI connector...');
@@ -73,7 +77,8 @@ export class Task {
             gitHubRepository: process.env.GITHUB_REPOSITORY,
             gitHubApiUrl: process.env.GITHUB_API_URL,
             gitHubWorkflowRunId: this.workflowRunId,
-            gitHubDownloadArtifactWorkflowName: this.downloadArtifactWorkflowName
+            gitHubDownloadArtifactWorkflowName: this.downloadArtifactWorkflowName,
+            gitHubArtifactContext: this.artifactContext
         };
 
         // call the signPath API to submit the signing request

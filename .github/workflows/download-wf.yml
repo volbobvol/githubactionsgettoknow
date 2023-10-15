@@ -6,11 +6,13 @@ on:
       signingRequestData:
         description: 'SignPath signing request data used by DownloadSignedArtifact action to download the signed artifact'
         required: true
+      artifactContext:
+        description: 'Additional information that identifies the artifact creation context'
+        required: false
 
 jobs:
 
   download:
-
     runs-on: windows-latest
     steps:
      - name: Run DownloadSignedArtifact
@@ -18,4 +20,12 @@ jobs:
        with:
          AuthenticationToken: ${{ secrets.CI_USER_TOKEN }}
          #Target: 'signed-artifact-file-name.zip'
-         ArtifactName: 'SignedArtifact'
+         #ArtifactName: 'SignedArtifact'
+
+  deployment:
+    runs-on: windows-latest
+    environment: 
+      name: ${{ github.event.inputs.artifactContext }}
+    steps:
+      - name: Deploy artifact
+        run: "echo \"Deploy to ${{ secrets.SECRET_ENV_NAME }} \""
