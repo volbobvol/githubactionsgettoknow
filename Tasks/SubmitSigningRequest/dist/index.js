@@ -2786,7 +2786,6 @@ class Task {
                 core.setOutput('signingRequestId', signingRequestId);
             }
             catch (err) {
-                core.error(err.message);
                 core.setFailed(err.message);
             }
         });

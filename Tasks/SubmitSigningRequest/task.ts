@@ -16,7 +16,6 @@ export class Task {
             core.setOutput('signingRequestId', signingRequestId);
         }
         catch (err) {
-            core.error((err as any).message);
             core.setFailed((err as any).message);
         }
     }
