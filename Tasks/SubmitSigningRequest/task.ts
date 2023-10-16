@@ -11,6 +11,7 @@ export class Task {
     }
 
     async run() {
+
         try {
             const signingRequestId = await this.submitSigningRequest();
             core.setOutput('signingRequestId', signingRequestId);
