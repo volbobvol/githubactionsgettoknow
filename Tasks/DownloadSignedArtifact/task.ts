@@ -12,9 +12,8 @@ export class Task {
         try {
 
             if(this.signingRequestStatus !== 'Completed') {
-                core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
                 core.info(`See the request details here: ${this.signingRequestUiUrl}.`);
-                core.setFailed(`The signing request is not completed yet.`);
+                core.setFailed(`The signing request status is ${this.signingRequestStatus}.`);
                 return;
             }
 

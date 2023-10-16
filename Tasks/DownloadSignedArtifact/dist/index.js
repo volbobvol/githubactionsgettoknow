@@ -32449,9 +32449,8 @@ class Task {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 if (this.signingRequestStatus !== 'Completed') {
-                    core.error(`The signing request is not completed yet. The current status is ${this.signingRequestStatus}.`);
                     core.info(`See the request details here: ${this.signingRequestUiUrl}.`);
-                    core.setFailed(`The signing request is not completed yet.`);
+                    core.setFailed(`The signing request status is ${this.signingRequestStatus}.`);
                     return;
                 }
                 const signedArtifactFilePath = yield this.dowloadTheSigninedArtifact();

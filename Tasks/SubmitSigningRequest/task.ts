@@ -95,11 +95,6 @@ export class Task {
             }))
             .data;
 
-        if (response.error) {
-            // got error from the connector
-            throw new Error(response.error);
-        }
-
         if (response.validationResult && response.validationResult.errors.length > 0) {
 
             // got validation errors from the connector
@@ -118,6 +113,11 @@ export class Task {
             core.endGroup()
 
             throw new Error("CI system vlidation failed.");
+        }
+
+        if (response.error) {
+            // got error from the connector
+            throw new Error(response.error);
         }
 
         core.info(`SignPath signing request has been successfully submitted.`);
