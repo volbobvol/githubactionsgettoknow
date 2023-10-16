@@ -14,7 +14,7 @@ jobs:
         configuration: [Debug, Release]
 
     runs-on: windows-latest
-    
+
 
     env:
       SigningPolicySlug: "${{ matrix.configuration == 'Debug' && 'TestGithubSP' || 'ProdGithubSP' }}"
@@ -23,7 +23,7 @@ jobs:
      - name: Run SubmitSigningRequest
        uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
        with:
-         SignPathConnectorUrl: 'https://rw8kz94j-44353.euw.devtunnels.ms'
+         SignPathConnectorUrl: 'https://WRONGSA.SD'
          CIUserToken: ${{ secrets.CI_USER_TOKEN }}
          OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
          ProjectSlug: 'GitHubTest'
