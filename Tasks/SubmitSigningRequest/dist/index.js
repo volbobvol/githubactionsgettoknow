@@ -2843,7 +2843,7 @@ class Task {
                 .post(this.urlBuilder.buildSubmitSigningRequestUrl(), submitRequestPayload, { responseType: "json" })
                 .catch((e) => {
                 var _a;
-                core.error(`SignPath API call error: ${e.message}`);
+                core.error(`SignPath API call error: ${e.message}. Http status code is: ${e.code}`);
                 if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
                     throw new Error(e.response.data);
                 }
