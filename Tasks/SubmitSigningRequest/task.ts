@@ -34,7 +34,7 @@ export class Task {
     }
 
     get signPathToken(): string {
-        return core.getInput('CIUserToken', { required: true });
+        return core.getInput('SignPathApiUserToken', { required: true });
     }
 
     get projectSlug(): string {
@@ -67,7 +67,7 @@ export class Task {
 
         // prepare the payload
         const submitRequestPayload = {
-            ciUserToken: this.signPathToken,
+            ApiUserToken: this.signPathToken,
             artifactName: this.artifactName,
             signPathOrganizationId: this.organizationId,
             signPathProjectSlug: this.projectSlug,

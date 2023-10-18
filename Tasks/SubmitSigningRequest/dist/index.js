@@ -2800,7 +2800,7 @@ class Task {
         return core.getInput('OrganizationId', { required: true });
     }
     get signPathToken() {
-        return core.getInput('CIUserToken', { required: true });
+        return core.getInput('SignPathApiUserToken', { required: true });
     }
     get projectSlug() {
         return core.getInput('ProjectSlug', { required: true });
@@ -2825,7 +2825,7 @@ class Task {
             core.info('Submitting the signing request to SignPath CI connector...');
             // prepare the payload
             const submitRequestPayload = {
-                ciUserToken: this.signPathToken,
+                ApiUserToken: this.signPathToken,
                 artifactName: this.artifactName,
                 signPathOrganizationId: this.organizationId,
                 signPathProjectSlug: this.projectSlug,

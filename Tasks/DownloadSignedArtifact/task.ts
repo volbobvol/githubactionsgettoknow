@@ -45,8 +45,8 @@ export class Task {
         return this.signingRequestData.artifactDownloadUrl;
     }
 
-    get authenticationToken(): string {
-        return core.getInput('AuthenticationToken', { required: true });
+    get signPathApiUserToken(): string {
+        return core.getInput('SignPathApiUserToken', { required: true });
     }
 
     get target(): string {
@@ -69,7 +69,7 @@ export class Task {
 
         core.info(`The signed artifact URL is ${this.signedArtifactUrl}`);
 
-        const authorizationHeader = 'Bearer ' + this.authenticationToken;
+        const authorizationHeader = 'Bearer ' + this.signPathApiUserToken;
 
         const response = await axios.get(this.signedArtifactUrl, {
             responseType: 'stream',

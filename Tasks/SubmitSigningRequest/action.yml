@@ -4,7 +4,7 @@ inputs:
   SignPathConnectorUrl:
     description: 'GitHub Actions SignPath connector URL'
     required: true
-  CIUserToken:
+  SignPathApiUserToken:
     description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
   OrganizationId:

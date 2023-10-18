@@ -19,7 +19,7 @@ jobs:
      - name: Run DownloadSignedArtifact
        uses: volbobvol/githubactionsgettoknow/Tasks/DownloadSignedArtifact@main
        with:
-         AuthenticationToken: ${{ secrets.CI_USER_TOKEN }}
+         SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
          #Target: 'signed-artifact-file-name.zip'
          ArtifactName: 'SignedArtifact'
 

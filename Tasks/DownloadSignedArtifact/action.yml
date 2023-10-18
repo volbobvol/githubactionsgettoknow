@@ -1,11 +1,11 @@
 name: 'DownloadSignedArtifact'
 description: ''
 inputs:
-  signingRequestData:
+  SigningRequestData:
     description: 'SignPath signing request data used by DownloadSignedArtifact action to download the signed artifact'
     required: true
     default: ${{ github.event.inputs.signingRequestData }}
-  AuthenticationToken:
+  SignPathApiUserToken:
     description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
   Target:
