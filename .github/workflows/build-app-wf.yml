@@ -16,7 +16,7 @@ jobs:
 
     steps:
     - name: Log Version
-      run: "Version 1"
+      run: "echo \"Version 1\""
 
     - name: Create artifact file
       run: "echo \"Build: ${{ matrix.configuration }}. Created on: \" > script.ps1"
