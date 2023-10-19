@@ -15,6 +15,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
+    - name: Log Version
+      run: "Version 1"
+
     - name: Create artifact file
       run: "echo \"Build: ${{ matrix.configuration }}. Created on: \" > script.ps1"
     - name: Append create date
@@ -26,3 +29,6 @@ jobs:
       with: 
         name: ${{ matrix.configuration }}-artifact
         path: "script.ps1"
+    - uses: GuillaumeFalourd/wait-sleep-action@v1
+      with:
+        time: '5m'

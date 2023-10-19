@@ -20,15 +20,17 @@ jobs:
       SigningPolicySlug: "${{ matrix.configuration == 'Debug' && 'TestGithubSP' || 'ProdGithubSP' }}"
       DeployTo: "${{ matrix.configuration == 'Debug' && 'Staging' || 'Production' }}"
     steps:
-     - name: Run SubmitSigningRequest
-       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
-       with:
-         SignPathConnectorUrl: 'https://w8p7h57v-44353.euw.devtunnels.ms'
-         SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
-         OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
-         ProjectSlug: 'GitHubTest'
-         SigningPolicySlug: ${{ env.SigningPolicySlug }}
-         ArtifactConfigurationSlug: 'initial'
-         ArtifactName: ${{ matrix.configuration }}-artifact
-         DownloadArtifactWorkflowName: 'Download Artifact'
-         ArtifactContext: ${{ env.DeployTo }}
+      - name: Log Version
+        run: "Version 1"
+    #  - name: Run SubmitSigningRequest
+    #    uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
+    #    with:
+    #      SignPathConnectorUrl: 'https://w8p7h57v-44353.euw.devtunnels.ms'
+    #      SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
+    #      OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+    #      ProjectSlug: 'GitHubTest'
+    #      SigningPolicySlug: ${{ env.SigningPolicySlug }}
+    #      ArtifactConfigurationSlug: 'initial'
+    #      ArtifactName: ${{ matrix.configuration }}-artifact
+    #      DownloadArtifactWorkflowName: 'Download Artifact'
+    #      ArtifactContext: ${{ env.DeployTo }}
