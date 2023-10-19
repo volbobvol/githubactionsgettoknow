@@ -67,7 +67,7 @@ export class Task {
 
         // prepare the payload
         const submitRequestPayload = {
-            ApiUserToken: this.signPathToken,
+            ApiToken: this.signPathToken,
             artifactName: this.artifactName,
             signPathOrganizationId: this.organizationId,
             signPathProjectSlug: this.projectSlug,

@@ -2825,7 +2825,7 @@ class Task {
             core.info('Submitting the signing request to SignPath CI connector...');
             // prepare the payload
             const submitRequestPayload = {
-                ApiUserToken: this.signPathToken,
+                ApiToken: this.signPathToken,
                 artifactName: this.artifactName,
                 signPathOrganizationId: this.organizationId,
                 signPathProjectSlug: this.projectSlug,
