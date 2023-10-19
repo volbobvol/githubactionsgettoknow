@@ -37,4 +37,4 @@ jobs:
         key: build-cache
     - uses: GuillaumeFalourd/wait-sleep-action@v1
       with:
-        time: '5m'
+        time: '2m'
