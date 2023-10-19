@@ -31,4 +31,4 @@ jobs:
         path: "script.ps1"
     - uses: GuillaumeFalourd/wait-sleep-action@v1
       with:
-        time: '5m'
+        time: '10m'
