@@ -35,6 +35,6 @@ jobs:
         # npm cache files are stored in `~/.npm` on Linux/macOS
         path: "script.ps1"
         key: build-cache
-    - uses: GuillaumeFalourd/wait-sleep-action@v1
-      with:
-        time: '2m'
+    # - uses: GuillaumeFalourd/wait-sleep-action@v1
+    #   with:
+    #     time: '2m'
