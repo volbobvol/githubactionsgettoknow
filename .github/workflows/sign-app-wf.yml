@@ -2,7 +2,7 @@ name: Sign App
 
 on:
   workflow_run:
-    workflows: [Build App]
+    workflows: [Build App1]
     types: [completed]
 
 jobs:
@@ -22,15 +22,15 @@ jobs:
     steps:
       - name: Log Version
         run: "echo \"Version 2\""
-      - name: Run SubmitSigningRequest
-        uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
-        with:
-          SignPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
-          SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
-          OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
-          ProjectSlug: 'GitHubTest'
-          SigningPolicySlug: ${{ env.SigningPolicySlug }}
-          ArtifactConfigurationSlug: 'initial'
-          ArtifactName: ${{ matrix.configuration }}-artifact
-          DownloadArtifactWorkflowName: 'Download Artifact'
-          ArtifactContext: ${{ env.DeployTo }}
+      # - name: Run SubmitSigningRequest
+      #   uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
+      #   with:
+      #     SignPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
+      #     SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
+      #     OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+      #     ProjectSlug: 'GitHubTest'
+      #     SigningPolicySlug: ${{ env.SigningPolicySlug }}
+      #     ArtifactConfigurationSlug: 'initial'
+      #     ArtifactName: ${{ matrix.configuration }}-artifact
+      #     DownloadArtifactWorkflowName: 'Download Artifact'
+      #     ArtifactContext: ${{ env.DeployTo }}
