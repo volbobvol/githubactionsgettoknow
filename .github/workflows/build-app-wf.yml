@@ -37,6 +37,8 @@ jobs:
         key: build-cache
   call-workflow-passing-data:
     uses: volbobvol/githubactionsgettoknow/.github/workflows/child-wf.yml@main
+    environment: 
+      name: "production"
     with:
       myinput: 'GotToChildWorkflow'
     # - uses: GuillaumeFalourd/wait-sleep-action@v1
