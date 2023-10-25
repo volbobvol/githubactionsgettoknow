@@ -35,12 +35,6 @@ jobs:
         # npm cache files are stored in `~/.npm` on Linux/macOS
         path: "script.ps1"
         key: build-cache
-  call-workflow-passing-data:
-    uses: volbobvol/githubactionsgettoknow/.github/workflows/child-wf.yml@main
-    environment: 
-      name: "production"
-    with:
-      myinput: 'GotToChildWorkflow'
-    # - uses: GuillaumeFalourd/wait-sleep-action@v1
-    #   with:
-    #     time: '2m'
+    - uses: GuillaumeFalourd/wait-sleep-action@v1
+      with:
+        time: '2m'

@@ -2,7 +2,7 @@ name: Sign App
 
 on:
   workflow_run:
-    workflows: [Build App1]
+    workflows: [Build App]
     types: [completed]
 
 jobs:
@@ -21,7 +21,7 @@ jobs:
       DeployTo: "${{ matrix.configuration == 'Debug' && 'Staging' || 'Production' }}"
     steps:
       - name: Log Version
-        run: "echo \"Version 2\""
+        run: "echo \"Version 1\""
       # - name: Run SubmitSigningRequest
       #   uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
       #   with:
