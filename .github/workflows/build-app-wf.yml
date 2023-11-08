@@ -39,7 +39,6 @@ jobs:
         SigningPolicySlug: 'SigningPolicy'
         ArtifactConfigurationSlug: 'testzip'
         ArtifactName: 'artifact-name'
-        GitHubToken: '${{ secrets.GITHUB_TOKEN }}'
     # - uses: GuillaumeFalourd/wait-sleep-action@v1
     #   with:
     #     time: '2m'
