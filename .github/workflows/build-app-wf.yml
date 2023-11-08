@@ -1,8 +1,10 @@
 name: Build App
 
 on:
-  push:
-  pull_request:
+ issue_comment:
+   
+ # push:
+ # pull_request:
 
 jobs:
 

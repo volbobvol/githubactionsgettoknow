@@ -1,9 +1,10 @@
 name: Sign App
 
 on:
-  workflow_run:
-    workflows: [Build App]
-    types: [completed]
+  issue_comment:
+  #workflow_run:
+   # workflows: [Build App]
+   # types: [completed]
 
 jobs:
 
