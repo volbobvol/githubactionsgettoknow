@@ -29,18 +29,18 @@ export class Task {
 
 
             const signingRequestId = await this.submitSigningRequest();
-            core.setOutput('signingRequestId', signingRequestId);
-            const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
-            const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
-            await this.logArtifactFileStat(signedArtifactFilePath);
-            const artifactClient = coreArtifact.create();
-            core.info('Registering the signed artifact in the artifacts list...');
-            artifactClient.uploadArtifact(`${this.artifactName}-signed`,
-                [path.basename(signedArtifactFilePath)],
-                path.dirname(signedArtifactFilePath));
-                //test
+            // core.setOutput('signingRequestId', signingRequestId);
+            // const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
+            // const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
+            // await this.logArtifactFileStat(signedArtifactFilePath);
+            // const artifactClient = coreArtifact.create();
+            // core.info('Registering the signed artifact in the artifacts list...');
+            // artifactClient.uploadArtifact(`${this.artifactName}-signed`,
+            //     [path.basename(signedArtifactFilePath)],
+            //     path.dirname(signedArtifactFilePath));
+            //     //test
 
-            core.info('The artifact has been successfully added.');
+            // core.info('The artifact has been successfully added.');
         }
         catch (err) {
             core.error((err as any).message);
