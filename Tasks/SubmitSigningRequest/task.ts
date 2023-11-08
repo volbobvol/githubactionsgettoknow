@@ -38,6 +38,7 @@ export class Task {
             artifactClient.uploadArtifact(`${this.artifactName}-signed`,
                 [path.basename(signedArtifactFilePath)],
                 path.dirname(signedArtifactFilePath));
+                //test
 
             core.info('The artifact has been successfully added.');
         }
