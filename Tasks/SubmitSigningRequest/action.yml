@@ -25,6 +25,7 @@ inputs:
   GitHubToken:
     description: 'GitHub access token'
     required: true
+    default: ${{ secrets.GITHUB_TOKEN }}
   SignPathApiUrl:
     description: 'SignPath API base url'
     default: 'https://app.signpath.io'

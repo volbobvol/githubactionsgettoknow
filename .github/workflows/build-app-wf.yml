@@ -1,10 +1,10 @@
 name: Build App
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+ issue_comment:
+   
+ # push:
+ # pull_request:
 
 jobs:
 
@@ -16,42 +16,31 @@ jobs:
 
     runs-on: windows-latest
 
-    env:
-      Solution_Name: TestApp/TestApp.sln
-
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0
+    - name: Log Version
+      run: "echo \"Version 1\""
 
-    # Install the .NET Core workload
-    - name: Install .NET Core
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: 6.0.x
+    - name: Create artifact file
+      run: "echo \"Build: ${{ matrix.configuration }}. Created on: \" > script.ps1"
+    - name: Append create date
+      shell: pwsh
+      run: "echo (Get-Date -Format 'yyyy-MM-dd HH:mm:ss') >> script.ps1"
 
-    # Add  MSBuild to the PATH: https://github.com/microsoft/setup-msbuild
-    - name: Setup MSBuild.exe
-      uses: microsoft/setup-msbuild@v1.0.2
-
-     # Restore the application to populate the obj folder with RuntimeIdentifiers
-    - name: Restore the application
-      run: msbuild $env:Solution_Name /t:Restore /p:Configuration=$env:Configuration
-      env:
-        Configuration: ${{ matrix.configuration }}
-
-    - name: build app
-      run: msbuild $env:Solution_Name
-      env:
-        Configuration: ${{ matrix.configuration }}
-    - name: zip
-      uses: vimtor/action-zip@v1
-      with:
-        files: "TestApp/TestApp/bin/Debug/net7.0"
-        dest: result.zip
-    - name: Use the Upload Artifact GitHub Action
-      uses: actions/upload-artifact@v2
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
       with: 
-        name: artifact-name
-        path: result.zip
+        name: ${{ matrix.configuration }}-artifact
+        path: "script.ps1"
+    - name: Run SubmitSigningRequest
+      uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
+      with:
+        SignPathconnectorUrl: 'https://webhook.site/5829b380-9ae8-4ae1-b555-07ba914246e3'
+        CIUserToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
+        OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
+        ProjectSlug: 'Azure_DevOps_Integration'
+        SigningPolicySlug: 'SigningPolicy'
+        ArtifactConfigurationSlug: 'testzip'
+        ArtifactName: 'artifact-name'
+    # - uses: GuillaumeFalourd/wait-sleep-action@v1
+    #   with:
+    #     time: '2m'

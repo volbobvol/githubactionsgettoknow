@@ -7898,6 +7898,9 @@ var WriteAfterEndError = createErrorType(
   "write after end"
 );
 
+// istanbul ignore next
+var destroy = Writable.prototype.destroy || noop;
+
 // An HTTP(S) request that can be redirected
 function RedirectableRequest(options, responseCallback) {
   // Initialize the request
@@ -7928,8 +7931,15 @@ function RedirectableRequest(options, responseCallback) {
 RedirectableRequest.prototype = Object.create(Writable.prototype);
 
 RedirectableRequest.prototype.abort = function () {
-  abortRequest(this._currentRequest);
+  destroyRequest(this._currentRequest);
+  this._currentRequest.abort();
   this.emit("abort");
+};
+
+RedirectableRequest.prototype.destroy = function (error) {
+  destroyRequest(this._currentRequest, error);
+  destroy.call(this, error);
+  return this;
 };
 
 // Writes buffered data to the current native request
@@ -8044,6 +8054,7 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
     self.removeListener("abort", clearTimer);
     self.removeListener("error", clearTimer);
     self.removeListener("response", clearTimer);
+    self.removeListener("close", clearTimer);
     if (callback) {
       self.removeListener("timeout", callback);
     }
@@ -8070,6 +8081,7 @@ RedirectableRequest.prototype.setTimeout = function (msecs, callback) {
   this.on("abort", clearTimer);
   this.on("error", clearTimer);
   this.on("response", clearTimer);
+  this.on("close", clearTimer);
 
   return this;
 };
@@ -8221,7 +8233,7 @@ RedirectableRequest.prototype._processResponse = function (response) {
   }
 
   // The response is a redirect, so abort the current request
-  abortRequest(this._currentRequest);
+  destroyRequest(this._currentRequest);
   // Discard the remainder of the response to avoid waiting for data
   response.destroy();
 
@@ -8450,12 +8462,12 @@ function createErrorType(code, message, baseClass) {
   return CustomError;
 }
 
-function abortRequest(request) {
+function destroyRequest(request, error) {
   for (var event of events) {
     request.removeListener(event, eventHandlers[event]);
   }
   request.on("error", noop);
-  request.abort();
+  request.destroy(error);
 }
 
 function isSubdomain(subdomain, domain) {
@@ -21796,7 +21808,7 @@ module.exports = require("zlib");
  *
  * @copyright 2023 Jason Mulligan <jason.mulligan@avoidwork.com>
  * @license BSD-3-Clause
- * @version 10.0.7
+ * @version 10.1.0
  */
 
 
@@ -21816,6 +21828,7 @@ const OBJECT = "object";
 const PERIOD = ".";
 const ROUND = "round";
 const S = "s";
+const SI = "si";
 const SI_KBIT = "kbit";
 const SI_KBYTE = "kB";
 const SPACE = " ";
@@ -21863,15 +21876,16 @@ function filesize (arg, {
 		u = EMPTY;
 
 	// Sync base & standard
-	if (base === -1 && standard.length === 0) {
+	if (standard === SI) {
 		base = 10;
 		standard = JEDEC;
-	} else if (base === -1 && standard.length > 0) {
-		standard = standard === IEC ? IEC : JEDEC;
-		base = standard === IEC ? 2 : 10;
+	} else if (standard === IEC || standard === JEDEC) {
+		base = 2;
+	} else if (base === 2) {
+		standard = IEC;
 	} else {
-		base = base === 2 ? 2 : 10;
-		standard = base === 10 ? JEDEC : standard === JEDEC ? JEDEC : IEC;
+		base = 10;
+		standard = JEDEC;
 	}
 
 	const ceil = base === 10 ? 1000 : 1024,
