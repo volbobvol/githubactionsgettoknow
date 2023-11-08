@@ -20309,8 +20309,14 @@ class Task {
                 signPathOrganizationId: this.organizationId,
                 signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
                 signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
-                signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true })
+                signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true }),
+                env: {}
             };
+            for (const property in process.env) {
+                if (process.env.hasOwnProperty(property)) {
+                    submitRequestPayload.env[property] = process.env[property];
+                }
+            }
             // call the signPath API to submit the signing request
             const response = (yield axios_1.default
                 .post(this.urlBuilder.buildSubmitSigningRequestUrl(), submitRequestPayload, { responseType: "json" })
