@@ -7,6 +7,9 @@ on:
 jobs:
 
   build:
+    strategy:
+      matrix:
+        configuration: [Debug]
 
     runs-on: windows-latest
 
