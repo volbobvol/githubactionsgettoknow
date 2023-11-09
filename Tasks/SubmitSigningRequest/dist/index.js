@@ -20407,29 +20407,13 @@ class Task {
     }
     dowloadTheSigninedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
-            let targetDir = process.env.GITHUB_WORKSPACE;
-            if (this.signedArtifactDestinationPath) {
-                targetDir = this.signedArtifactDestinationPath;
-            }
-            let targetFilePath = '';
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
                 headers: {
                     Authorization: 'Bearer ' + this.signPathToken
                 }
-            })
-                .then(r => {
-                // get file name from the content-disposition header
-                const contentDisposition = response.headers['content-disposition'];
-                if (contentDisposition) {
-                    const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-                    if (fileNameMatch.length === 2) {
-                        const fileName = fileNameMatch[1];
-                        targetFilePath = path.join(targetDir, fileName);
-                    }
-                }
-                return r;
             });
+            const targetFilePath = path.join(process.env.GITHUB_WORKSPACE, this.signedArtifactDestinationPath);
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
             const writer = fs.createWriteStream(targetFilePath);
             response.data.pipe(writer);

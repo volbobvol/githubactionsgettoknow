@@ -23,8 +23,8 @@ inputs:
     description: 'Name of the artifact to sign'
     required: true
   SignedArtifactDestinationPath:
-    description: 'Directory where the signed artifact will be saved, current working directory if not specified'
-    required: false
+    description: 'Path where the signed artifact will be saved'
+    required: true
   GitHubToken:
     description: 'GitHub access token'
     required: true

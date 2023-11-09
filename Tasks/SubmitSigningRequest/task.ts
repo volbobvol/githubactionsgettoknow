@@ -202,34 +202,14 @@ export class Task {
     }
 
     async dowloadTheSigninedArtifact(signingRequest: SigningRequestDto): Promise<string> {
-        let targetDir = process.env.GITHUB_WORKSPACE as string;
-
-        if (this.signedArtifactDestinationPath) {
-            targetDir = this.signedArtifactDestinationPath;
-        }
-
-        let targetFilePath = '';
         const response = await axios.get(signingRequest.signedArtifactLink, {
             responseType: 'stream',
             headers: {
                 Authorization: 'Bearer ' + this.signPathToken
             }
-        })
-        .then(r => {
-
-            // get file name from the content-disposition header
-            const contentDisposition = response.headers['content-disposition'];
-            if (contentDisposition) {
-                const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
-                if (fileNameMatch!.length === 2) {
-                    const fileName = fileNameMatch![1];
-                    targetFilePath = path.join(targetDir, fileName);
-                }
-            }
-
-            return r;
         });
 
+        const targetFilePath = path.join(process.env.GITHUB_WORKSPACE as string, this.signedArtifactDestinationPath)
         core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
         const writer = fs.createWriteStream(targetFilePath)
         response.data.pipe(writer);

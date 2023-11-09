@@ -53,9 +53,10 @@ jobs:
         ArtifactConfigurationSlug: 'initial'
         ArtifactName: ${{ matrix.configuration }}-artifact
         GitHubToken: '${{ secrets.GITHUB_TOKEN }}'
+        SignedArtifactDestinationPath: 'signed-script.ps1'
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with: 
         name: ${{ matrix.configuration }}-artifact3
-        path: "script.ps1"
+        path: "signed-script.ps1"
