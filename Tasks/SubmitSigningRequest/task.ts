@@ -39,7 +39,6 @@ export class Task {
             core.info('The artifact has been successfully added.');
         }
         catch (err) {
-            core.error((err as any).message);
             core.setFailed((err as any).message);
         }
     }
@@ -89,7 +88,7 @@ export class Task {
             submitRequestPayload,
             { responseType: "json" })
             .catch((e: AxiosError) => {
-                core.error(`SignPath API call error: ${e.message}`);
+                core.error(`SignPath API call error: ${e.message}.`);
                 if(e.response?.data && typeof(e.response.data) === "string") {
                      throw new Error(e.response.data);
                 }
@@ -102,6 +101,8 @@ export class Task {
             throw new Error(response.error);
         }
 
+        core.info(`DATA ${JSON.stringify(response)}.`);
+
         if (response.signingRequestId) {
             // got error from the connector
             throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
@@ -109,7 +110,6 @@ export class Task {
 
         const signigrequestUrlObj  = url.parse(response.signingRequestUrl);
         this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
-        console.log(this.urlBuilder.signPathBaseUrl);
 
         if (response.validationResult && response.validationResult.errors.length > 0) {
 

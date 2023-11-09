@@ -20272,7 +20272,6 @@ class Task {
                 core.info('The artifact has been successfully added.');
             }
             catch (err) {
-                core.error(err.message);
                 core.setFailed(err.message);
             }
         });
@@ -20315,7 +20314,7 @@ class Task {
                 .post(this.urlBuilder.buildSubmitSigningRequestUrl(), submitRequestPayload, { responseType: "json" })
                 .catch((e) => {
                 var _a;
-                core.error(`SignPath API call error: ${e.message}`);
+                core.error(`SignPath API call error: ${e.message}.`);
                 if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
                     throw new Error(e.response.data);
                 }
@@ -20326,13 +20325,13 @@ class Task {
                 // got error from the connector
                 throw new Error(response.error);
             }
+            core.info(`DATA ${JSON.stringify(response)}.`);
             if (response.signingRequestId) {
                 // got error from the connector
                 throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
             }
             const signigrequestUrlObj = url_1.default.parse(response.signingRequestUrl);
             this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
-            console.log(this.urlBuilder.signPathBaseUrl);
             if (response.validationResult && response.validationResult.errors.length > 0) {
                 // got validation errors from the connector
                 core.startGroup('CI system setup validation errors');
