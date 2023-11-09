@@ -19,7 +19,7 @@ export async function executeWithRetries<RES>(
             if (Date.now() - startTime > maxTotalWaitngTimeMs) {
                 throw err;
             }
-            console.log(`Will check agin in ${delayMs/1000/60} minte(s)`);
+            console.log(`Next check in ${delayMs/1000/60} minte(s)`);
             await new Promise(resolve => setTimeout(resolve, delayMs));
             delayMs = Math.min(delayMs * 2, maxDelayMs);
         }
