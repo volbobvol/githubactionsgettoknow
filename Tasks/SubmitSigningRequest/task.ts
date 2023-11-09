@@ -103,7 +103,7 @@ export class Task {
 
         core.info(`DATA ${JSON.stringify(response)}.`);
 
-        if (response.signingRequestId) {
+        if (!response.signingRequestId) {
             // got error from the connector
             throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
         }
