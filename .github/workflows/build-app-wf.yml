@@ -58,5 +58,5 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-artifact@v3
       with: 
-        name: ${{ matrix.configuration }}-artifact3
+        name: ${{ matrix.configuration }}-artifact-signed
         path: "signed-script.ps1"
