@@ -1,7 +1,5 @@
 import axios, { AxiosError } from 'axios';
 import * as core from '@actions/core';
-import * as coreArtifact from '@actions/artifact';
-import * as polly from 'polly-js'
 import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
@@ -31,12 +29,6 @@ export class Task {
             const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
             const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
             await this.logArtifactFileStat(signedArtifactFilePath);
-            const artifactClient = coreArtifact.create();
-            core.info('Registering the signed artifact in the artifacts list...');
-            artifactClient.uploadArtifact(`${this.artifactName}-signed`,
-               [path.basename(signedArtifactFilePath)],
-                path.dirname(signedArtifactFilePath));
-            core.info('The artifact has been successfully added.');
         }
         catch (err) {
             core.setFailed((err as any).message);
