@@ -20412,7 +20412,6 @@ class Task {
                 targetDir = this.signedArtifactDestinationPath;
             }
             let targetFilePath = '';
-            const writer = fs.createWriteStream(targetFilePath);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
                 headers: {
@@ -20432,6 +20431,7 @@ class Task {
                 return r;
             });
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
+            const writer = fs.createWriteStream(targetFilePath);
             response.data.pipe(writer);
             yield new Promise((resolve, reject) => {
                 writer.on('finish', resolve);
