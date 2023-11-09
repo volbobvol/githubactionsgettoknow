@@ -29,6 +29,19 @@ jobs:
       with: 
         name: ${{ matrix.configuration }}-artifact
         path: "script.ps1"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with: 
+        name: ${{ matrix.configuration }}-artifact2
+        path: "script.ps1"
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with: 
+        name: ${{ matrix.configuration }}-artifact3
+        path: "script.ps1"
+
     - name: Run SubmitSigningRequest
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
       with:
