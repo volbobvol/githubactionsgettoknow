@@ -20282,6 +20282,9 @@ class Task {
     get artifactName() {
         return core.getInput('ArtifactName', { required: true });
     }
+    get signedArtifactDestinationPath() {
+        return core.getInput('SignedArtifactDestinationPath', { required: true });
+    }
     get organizationId() {
         return core.getInput('OrganizationId', { required: true });
     }
@@ -20325,7 +20328,6 @@ class Task {
                 // got error from the connector
                 throw new Error(response.error);
             }
-            core.info(`DATA ${JSON.stringify(response)}.`);
             if (!response.signingRequestId) {
                 // got error from the connector
                 throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
@@ -20405,17 +20407,31 @@ class Task {
     }
     dowloadTheSigninedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
-            const workingDir = process.env.GITHUB_WORKSPACE;
-            const fileName = `${this.artifactName}_signed.zip`;
-            const targetFilePath = path.join(workingDir, fileName);
-            core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
+            let targetDir = process.env.GITHUB_WORKSPACE;
+            if (this.signedArtifactDestinationPath) {
+                targetDir = this.signedArtifactDestinationPath;
+            }
+            let targetFilePath = '';
             const writer = fs.createWriteStream(targetFilePath);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
                 headers: {
                     Authorization: 'Bearer ' + this.signPathToken
                 }
+            })
+                .then(r => {
+                // get file name from the content-disposition header
+                const contentDisposition = response.headers['content-disposition'];
+                if (contentDisposition) {
+                    const fileNameMatch = contentDisposition.match(/filename="(.+)"/);
+                    if (fileNameMatch.length === 2) {
+                        const fileName = fileNameMatch[1];
+                        targetFilePath = path.join(targetDir, fileName);
+                    }
+                }
+                return r;
             });
+            core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
             response.data.pipe(writer);
             yield new Promise((resolve, reject) => {
                 writer.on('finish', resolve);
