@@ -52,7 +52,7 @@ export class Task {
     }
 
     get signedArtifactDestinationPath(): string {
-        return core.getInput('SignedArtifactDestinationPath', { required: true });
+        return core.getInput('SignedArtifactDestinationPath', { required: false });
     }
 
     get organizationId(): string {

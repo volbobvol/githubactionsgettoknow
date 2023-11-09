@@ -20283,7 +20283,7 @@ class Task {
         return core.getInput('ArtifactName', { required: true });
     }
     get signedArtifactDestinationPath() {
-        return core.getInput('SignedArtifactDestinationPath', { required: true });
+        return core.getInput('SignedArtifactDestinationPath', { required: false });
     }
     get organizationId() {
         return core.getInput('OrganizationId', { required: true });
