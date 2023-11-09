@@ -20261,7 +20261,6 @@ class Task {
     run() {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                core.info(`ActionRuntime: ${process.env.ACTIONS_RUNTIME_URL}`);
                 const signingRequestId = yield this.submitSigningRequest();
                 core.setOutput('signingRequestId', signingRequestId);
                 const signingRequest = yield this.ensureSigningRequestCompleted(signingRequestId);
@@ -20288,14 +20287,14 @@ class Task {
         return core.getInput('OrganizationId', { required: true });
     }
     get signPathToken() {
-        return core.getInput('CIUserToken', { required: true });
+        return core.getInput('ApiToken', { required: true });
     }
     submitSigningRequest() {
         return __awaiter(this, void 0, void 0, function* () {
             core.info('Submitting the signing request to SignPath CI connector...');
             // prepare the payload
             const submitRequestPayload = {
-                ciUserToken: this.signPathToken,
+                apiToken: this.signPathToken,
                 artifactName: this.artifactName,
                 gitHubApiUrl: process.env.GITHUB_API_URL,
                 gitHubWorkflowRef: process.env.GITHUB_WORKFLOW_REF,
@@ -20331,7 +20330,9 @@ class Task {
                 // got error from the connector
                 throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
             }
-            this.urlBuilder.signPathBaseUrl = url_1.default.parse(response.signingRequestUrl).host;
+            const signigrequestUrlObj = url_1.default.parse(response.signingRequestUrl);
+            this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
+            console.log(this.urlBuilder.signPathBaseUrl);
             if (response.validationResult && response.validationResult.errors.length > 0) {
                 // got validation errors from the connector
                 core.startGroup('CI system setup validation errors');

@@ -15,12 +15,12 @@ CLI.build = function(args) {
     run('npm install', true, 'Tasks/SubmitSigningRequest'); // static code analysis
 
     run('npm run lint', true); // static code analysis
-    run('npm run test', true); // unit tests
 
     // transpile TypeScript to JavaScript
     run('tsc --rootDir tasks');
     run('ncc build index.js -o dist', true, 'Tasks/SubmitSigningRequest');
-    
+
+    run('npm run test', true); // unit tests
 }
 
 CLI.test = function(args) {

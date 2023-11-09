@@ -46,7 +46,7 @@ jobs:
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
       with:
         SignPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
-        CIUserToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
+        ApiToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
         OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
         ProjectSlug: 'GitHubTest'
         SigningPolicySlug: 'TestGithubSP'

@@ -26,9 +26,6 @@ export class Task {
 
     async run() {
         try {
-            core.info(`ActionRuntime: ${process.env.ACTIONS_RUNTIME_URL}`);
-
-
             const signingRequestId = await this.submitSigningRequest();
             core.setOutput('signingRequestId', signingRequestId);
             const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
@@ -60,7 +57,7 @@ export class Task {
     }
 
     get signPathToken(): string {
-        return core.getInput('CIUserToken', { required: true });
+        return core.getInput('ApiToken', { required: true });
     }
 
     private async submitSigningRequest (): Promise<string> {
@@ -69,7 +66,7 @@ export class Task {
 
         // prepare the payload
         const submitRequestPayload = {
-            ciUserToken: this.signPathToken,
+            apiToken: this.signPathToken,
             artifactName: this.artifactName,
             gitHubApiUrl: process.env.GITHUB_API_URL,
             gitHubWorkflowRef: process.env.GITHUB_WORKFLOW_REF,
