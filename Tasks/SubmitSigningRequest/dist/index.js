@@ -13670,7 +13670,7 @@ function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayM
                 if (Date.now() - startTime > maxTotalWaitngTimeMs) {
                     throw err;
                 }
-                console.log(`Will try agin in ${delayMs / 1000 / 60}m`);
+                console.log(`Will check agin in ${delayMs / 1000 / 60} minte(s)`);
                 yield new Promise(resolve => setTimeout(resolve, delayMs));
                 delayMs = Math.min(delayMs * 2, maxDelayMs);
             }
