@@ -45,14 +45,11 @@ jobs:
     - name: Run SubmitSigningRequest
       uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
       with:
-        SignPathconnectorUrl: 'https://webhook.site/5829b380-9ae8-4ae1-b555-07ba914246e3'
+        SignPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
         CIUserToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
-        OrganizationId: '2cde3088-c473-4ca4-9c40-f5045412c616'
-        ProjectSlug: 'Azure_DevOps_Integration'
-        SigningPolicySlug: 'SigningPolicy'
-        ArtifactConfigurationSlug: 'testzip'
-        ArtifactName: 'artifact-name'
+        OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+        ProjectSlug: 'GitHubTest'
+        SigningPolicySlug: 'TestGithubSP'
+        ArtifactConfigurationSlug: 'initial'
+        ArtifactName: ${{ matrix.configuration }}-artifact
         GitHubToken: '${{ secrets.GITHUB_TOKEN }}'
-    - uses: GuillaumeFalourd/wait-sleep-action@v1
-      with:
-        time: '5m'

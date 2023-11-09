@@ -6,6 +6,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
 import * as filesize from 'filesize'
+import url from 'url';
 import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
 import { executeWithRetries } from './utils';
 import { SignPathUrlBuilder } from './signpath-url-builder';
@@ -20,7 +21,7 @@ export class Task {
     urlBuilder: SignPathUrlBuilder;
 
     constructor () {
-        this.urlBuilder = new SignPathUrlBuilder(this.signPathApiUrl, this.signPathConnectorUrl);
+        this.urlBuilder = new SignPathUrlBuilder(this.signPathConnectorUrl);
     }
 
     async run() {
@@ -29,18 +30,16 @@ export class Task {
 
 
             const signingRequestId = await this.submitSigningRequest();
-            // core.setOutput('signingRequestId', signingRequestId);
-            // const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
-            // const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
-            // await this.logArtifactFileStat(signedArtifactFilePath);
-            // const artifactClient = coreArtifact.create();
-            // core.info('Registering the signed artifact in the artifacts list...');
-            // artifactClient.uploadArtifact(`${this.artifactName}-signed`,
-            //     [path.basename(signedArtifactFilePath)],
-            //     path.dirname(signedArtifactFilePath));
-            //     //test
-
-            // core.info('The artifact has been successfully added.');
+            core.setOutput('signingRequestId', signingRequestId);
+            const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
+            const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
+            await this.logArtifactFileStat(signedArtifactFilePath);
+            const artifactClient = coreArtifact.create();
+            core.info('Registering the signed artifact in the artifacts list...');
+            artifactClient.uploadArtifact(`${this.artifactName}-signed`,
+               [path.basename(signedArtifactFilePath)],
+                path.dirname(signedArtifactFilePath));
+            core.info('The artifact has been successfully added.');
         }
         catch (err) {
             core.error((err as any).message);
@@ -54,10 +53,6 @@ export class Task {
 
     get artifactName(): string {
         return core.getInput('ArtifactName', { required: true });
-    }
-
-    get signPathApiUrl(): string {
-        return core.getInput('SignPathApiUrl', { required: true });
     }
 
     get organizationId(): string {
@@ -89,14 +84,7 @@ export class Task {
             signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
             signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
             signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true }),
-            env: {}
         };
-
-        for (const property in process.env) {
-            if (process.env.hasOwnProperty(property)) {
-                (submitRequestPayload.env as any)[property] = process.env[property];
-            }
-        }
 
         // call the signPath API to submit the signing request
         const response = (await axios
@@ -116,6 +104,15 @@ export class Task {
             // got error from the connector
             throw new Error(response.error);
         }
+
+        if (response.signingRequestId) {
+            // got error from the connector
+            throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
+        }
+
+        const signigrequestUrlObj  = url.parse(response.signingRequestUrl);
+        this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
+        console.log(this.urlBuilder.signPathBaseUrl);
 
         if (response.validationResult && response.validationResult.errors.length > 0) {
 

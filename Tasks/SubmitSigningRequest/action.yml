@@ -25,9 +25,6 @@ inputs:
   GitHubToken:
     description: 'GitHub access token'
     required: true
-  SignPathApiUrl:
-    description: 'SignPath API base url'
-    default: 'https://app.signpath.io'
 runs:
   using: 'node16'
   main: 'dist/index.js'
