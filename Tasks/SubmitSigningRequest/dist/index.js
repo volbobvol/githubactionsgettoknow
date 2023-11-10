@@ -13452,6 +13452,11 @@ const signpath_url_builder_1 = __nccwpck_require__(2139);
 const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
 const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min
 const MaxDelayBetweenSigningRequestStatusChecksMs = 1000 * 60 * 20; // check at least every 30 minutes
+// output variables
+// signingRequestId - the id of the newly created signing request
+// signingRequestWebUrl - the url of the signing request in SignPath
+// signPathApiUrl - the base API url of the SignPath API
+// signingRequestDownloadUrl - the url of the signed artifact in SignPath
 class Task {
     constructor() {
         this.urlBuilder = new signpath_url_builder_1.SignPathUrlBuilder(this.signPathConnectorUrl);
@@ -13460,10 +13465,11 @@ class Task {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const signingRequestId = yield this.submitSigningRequest();
-                core.setOutput('signingRequestId', signingRequestId);
-                const signingRequest = yield this.ensureSigningRequestCompleted(signingRequestId);
-                const signedArtifactFilePath = yield this.dowloadTheSigninedArtifact(signingRequest);
-                yield this.logArtifactFileStat(signedArtifactFilePath);
+                if (this.signedArtifactDestinationPath) {
+                    const signingRequest = yield this.ensureSigningRequestCompleted(signingRequestId);
+                    const signedArtifactFilePath = yield this.dowloadTheSigninedArtifact(signingRequest);
+                    yield this.logArtifactFileStat(signedArtifactFilePath);
+                }
             }
             catch (err) {
                 core.setFailed(err.message);
@@ -13522,12 +13528,6 @@ class Task {
                 // got error from the connector
                 throw new Error(response.error);
             }
-            if (!response.signingRequestId) {
-                // got error from the connector
-                throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
-            }
-            const signigrequestUrlObj = url_1.default.parse(response.signingRequestUrl);
-            this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
             if (response.validationResult && response.validationResult.errors.length > 0) {
                 // got validation errors from the connector
                 core.startGroup('CI system setup validation errors');
@@ -13541,8 +13541,17 @@ class Task {
                 core.endGroup();
                 throw new Error("CI system vlidation failed.");
             }
+            if (!response.signingRequestId) {
+                // got error from the connector
+                throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
+            }
+            const signigRequestUrlObj = url_1.default.parse(response.signingRequestUrl);
+            this.urlBuilder.signPathBaseUrl = signigRequestUrlObj.protocol + '//' + signigRequestUrlObj.host;
             core.info(`SignPath signing request has been successfully submitted.`);
             core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
+            core.setOutput('signingRequestId', response.signingRequestId);
+            core.setOutput('signingRequestWebUrl', response.signingRequestUrl);
+            core.setOutput('signPathApiUrl', this.urlBuilder.signPathBaseUrl + '/API');
             return response.signingRequestId;
         });
     }
@@ -13601,6 +13610,7 @@ class Task {
     }
     dowloadTheSigninedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
+            core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
                 headers: {
@@ -13639,6 +13649,12 @@ exports.Task = Task;
 
 "use strict";
 
+/// function that retries promise calls with delays
+/// the delays are incremental and are calculated as follows:
+/// 1. start with minDelay
+/// 2. double the delay on each iteration
+/// 3. stop when maxTotalWaitngTimeMs is reached
+/// 4. if maxDelayMs is reached, use it for all subsequent calls
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -13650,12 +13666,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.executeWithRetries = void 0;
-/// function that retries promise calls with delays
-/// the delays are incremental and are calculated as follows:
-/// 1. start with minDelay
-/// 2. double the delay on each iteration
-/// 3. stop when maxTotalWaitngTimeMs is reached
-/// 4. if maxDelayMs is reached, use it for all subsequent calls
 function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayMs) {
     return __awaiter(this, void 0, void 0, function* () {
         const startTime = Date.now();

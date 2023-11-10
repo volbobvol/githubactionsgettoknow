@@ -5,19 +5,19 @@ inputs:
     description: 'GitHub Actions SignPath connector URL'
     required: true
   ApiToken:
-    description: 'SignPath REST API access token. More detailes: https://about.signpath.io/documentation/build-system-integration#authorization'
+    description: 'SignPath REST API access token. More details: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
   OrganizationId:
-    description: 'SignPath organization id. More detailes: https://about.signpath.io/documentation/getting-started'
+    description: 'SignPath organization id. More details: https://about.signpath.io/documentation/getting-started'
     required: true
   ProjectSlug:
-    description: 'SignPath project slug. More detailes: https://about.signpath.io/documentation/projects'
+    description: 'SignPath project slug. More details: https://about.signpath.io/documentation/projects'
     required: true
   SigningPolicySlug:
-    description: 'SignPath signing policy slug. More detailes: https://about.signpath.io/documentation/projects#signing-policies'
+    description: 'SignPath signing policy slug. More details: https://about.signpath.io/documentation/projects#signing-policies'
     required: true
   ArtifactConfigurationSlug:
-    description: 'SignPath artifact configuration id. More detailes: https://about.signpath.io/documentation/projects#artifact-configurations'
+    description: 'SignPath artifact configuration id. More details: https://about.signpath.io/documentation/projects#artifact-configurations'
     required: true
   ArtifactName:
     description: 'Name of the artifact to sign'

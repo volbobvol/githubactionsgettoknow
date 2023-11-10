@@ -14,6 +14,11 @@ const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
 const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min
 const MaxDelayBetweenSigningRequestStatusChecksMs = 1000 * 60 * 20; // check at least every 30 minutes
 
+// output variables
+// signingRequestId - the id of the newly created signing request
+// signingRequestWebUrl - the url of the signing request in SignPath
+// signPathApiUrl - the base API url of the SignPath API
+// signingRequestDownloadUrl - the url of the signed artifact in SignPath
 
 export class Task {
     urlBuilder: SignPathUrlBuilder;
@@ -25,10 +30,14 @@ export class Task {
     async run() {
         try {
             const signingRequestId = await this.submitSigningRequest();
-            core.setOutput('signingRequestId', signingRequestId);
-            const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
-            const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
-            await this.logArtifactFileStat(signedArtifactFilePath);
+
+            if (this.signedArtifactDestinationPath) {
+
+              const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
+              const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
+              await this.logArtifactFileStat(signedArtifactFilePath);
+
+            }
         }
         catch (err) {
             core.setFailed((err as any).message);
@@ -97,14 +106,6 @@ export class Task {
             throw new Error(response.error);
         }
 
-        if (!response.signingRequestId) {
-            // got error from the connector
-            throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
-        }
-
-        const signigrequestUrlObj  = url.parse(response.signingRequestUrl);
-        this.urlBuilder.signPathBaseUrl = signigrequestUrlObj.protocol + '//' + signigrequestUrlObj.host;
-
         if (response.validationResult && response.validationResult.errors.length > 0) {
 
             // got validation errors from the connector
@@ -125,8 +126,21 @@ export class Task {
             throw new Error("CI system vlidation failed.");
         }
 
+        if (!response.signingRequestId) {
+            // got error from the connector
+            throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
+        }
+
+        const signigRequestUrlObj  = url.parse(response.signingRequestUrl);
+        this.urlBuilder.signPathBaseUrl = signigRequestUrlObj.protocol + '//' + signigRequestUrlObj.host;
+
         core.info(`SignPath signing request has been successfully submitted.`);
         core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
+
+
+        core.setOutput('signingRequestId', response.signingRequestId);
+        core.setOutput('signingRequestWebUrl', response.signingRequestUrl);
+        core.setOutput('signPathApiUrl', this.urlBuilder.signPathBaseUrl + '/API');
 
         return response.signingRequestId;
     }
@@ -194,6 +208,7 @@ export class Task {
     }
 
     async dowloadTheSigninedArtifact(signingRequest: SigningRequestDto): Promise<string> {
+        core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
         const response = await axios.get(signingRequest.signedArtifactLink, {
             responseType: 'stream',
             headers: {
