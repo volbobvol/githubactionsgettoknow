@@ -24,10 +24,10 @@ inputs:
     description: 'Name of the artifact to sign'
     required: true
   signedArtifactDestinationPath:
-    description: 'Path where the signed artifact will be saved'
+    description: 'Path where the signed artifact will be saved, if empty then the task will not download the artifact from SignPath'
     required: false
   gitHubToken:
-    description: 'GitHub access token'
+    description: 'GitHub access token. Is is recommended to use the default token provided by GitHub: ${{ secrets.GITHUB_TOKEN }}'
     required: true
 outputs:
   signingRequestId:

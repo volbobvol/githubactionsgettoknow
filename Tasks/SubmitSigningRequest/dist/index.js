@@ -13445,7 +13445,7 @@ const core = __importStar(__nccwpck_require__(8163));
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 const moment = __importStar(__nccwpck_require__(7393));
-const filesize = __importStar(__nccwpck_require__(3075));
+const fileSize = __importStar(__nccwpck_require__(3075));
 const url_1 = __importDefault(__nccwpck_require__(7310));
 const utils_1 = __nccwpck_require__(9586);
 const signpath_url_builder_1 = __nccwpck_require__(2139);
@@ -13467,7 +13467,7 @@ class Task {
                 const signingRequestId = yield this.submitSigningRequest();
                 if (this.signedArtifactDestinationPath) {
                     const signingRequest = yield this.ensureSigningRequestCompleted(signingRequestId);
-                    const signedArtifactFilePath = yield this.dowloadTheSigninedArtifact(signingRequest);
+                    const signedArtifactFilePath = yield this.downloadTheSignedArtifact(signingRequest);
                     yield this.logArtifactFileStat(signedArtifactFilePath);
                 }
             }
@@ -13551,14 +13551,14 @@ class Task {
                     }
                 });
                 core.endGroup();
-                throw new Error("CI system vlidation failed.");
+                throw new Error("CI system validation failed.");
             }
             if (!response.signingRequestId) {
                 // got error from the connector
-                throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
+                throw new Error(`SignPath signing request was not created. Please make sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector endpoint.`);
             }
-            const signigRequestUrlObj = url_1.default.parse(response.signingRequestUrl);
-            this.urlBuilder.signPathBaseUrl = signigRequestUrlObj.protocol + '//' + signigRequestUrlObj.host;
+            const signingRequestUrlObj = url_1.default.parse(response.signingRequestUrl);
+            this.urlBuilder.signPathBaseUrl = signingRequestUrlObj.protocol + '//' + signingRequestUrlObj.host;
             core.info(`SignPath signing request has been successfully submitted.`);
             core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
             core.setOutput('signingRequestId', response.signingRequestId);
@@ -13567,11 +13567,11 @@ class Task {
             return response.signingRequestId;
         });
     }
-    ensureSigningRequestCompleted(signingrequestId) {
+    ensureSigningRequestCompleted(signingRequestId) {
         return __awaiter(this, void 0, void 0, function* () {
             // check for status update
             const requestData = yield ((0, utils_1.executeWithRetries)(() => __awaiter(this, void 0, void 0, function* () {
-                const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingrequestId);
+                const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingRequestId);
                 const signingRequestDto = (yield axios_1.default
                     .get(requestStatusUrl, {
                     responseType: "json",
@@ -13620,7 +13620,7 @@ class Task {
             return requestData;
         });
     }
-    dowloadTheSigninedArtifact(signingRequest) {
+    downloadTheSignedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
             core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
@@ -13644,7 +13644,7 @@ class Task {
     logArtifactFileStat(artifactPath) {
         return __awaiter(this, void 0, void 0, function* () {
             yield fs.stat(artifactPath, (err, stats) => {
-                const size = filesize.partial({ base: 2, standard: "jedec" });
+                const size = fileSize.partial({ base: 2, standard: "jedec" });
                 core.info("File path: " + artifactPath);
                 core.info("File size: " + size(stats.size));
             });
@@ -13665,7 +13665,7 @@ exports.Task = Task;
 /// the delays are incremental and are calculated as follows:
 /// 1. start with minDelay
 /// 2. double the delay on each iteration
-/// 3. stop when maxTotalWaitngTimeMs is reached
+/// 3. stop when maxTotalWaitingTimeMs is reached
 /// 4. if maxDelayMs is reached, use it for all subsequent calls
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -13678,7 +13678,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.executeWithRetries = void 0;
-function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayMs) {
+function executeWithRetries(promise, maxTotalWaitingTimeMs, minDelayMs, maxDelayMs) {
     return __awaiter(this, void 0, void 0, function* () {
         const startTime = Date.now();
         let delayMs = minDelayMs;
@@ -13689,10 +13689,10 @@ function executeWithRetries(promise, maxTotalWaitngTimeMs, minDelayMs, maxDelayM
                 break;
             }
             catch (err) {
-                if (Date.now() - startTime > maxTotalWaitngTimeMs) {
+                if (Date.now() - startTime > maxTotalWaitingTimeMs) {
                     throw err;
                 }
-                console.log(`Next check in ${delayMs / 1000 / 60} minte(s)`);
+                console.log(`Next check in ${delayMs / 1000 / 60} minute(s)`);
                 yield new Promise(resolve => setTimeout(resolve, delayMs));
                 delayMs = Math.min(delayMs * 2, maxDelayMs);
             }
