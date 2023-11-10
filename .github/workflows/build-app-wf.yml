@@ -74,11 +74,11 @@ jobs:
         path: "signed-script.ps1"
 
     - name: Log signingRequestId
-      run: "echo $signingRequestId"
+      run: echo "$signingRequestId"
     - name: Log signingRequestWebUrl
-      run: "echo $signingRequestWebUrl"
+      run: echo "$signingRequestWebUrl"
     - name: Log signPathApiUrl
-      run: "echo $signPathApiUrl"
+      run: echo "$signPathApiUrl"
     - name: Log signingRequestDownloadUrl
-      run: "echo $signingRequestDownloadUrl"
+      run: echo "$signingRequestDownloadUrl"
       
