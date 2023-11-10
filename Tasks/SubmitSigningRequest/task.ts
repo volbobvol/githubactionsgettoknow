@@ -3,7 +3,7 @@ import * as core from '@actions/core';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as moment from 'moment';
-import * as filesize from 'filesize'
+import * as fileSize from 'filesize'
 import url from 'url';
 import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
 import { executeWithRetries } from './utils';
@@ -34,7 +34,7 @@ export class Task {
             if (this.signedArtifactDestinationPath) {
 
               const signingRequest = await this.ensureSigningRequestCompleted(signingRequestId);
-              const signedArtifactFilePath = await this.dowloadTheSigninedArtifact(signingRequest);
+              const signedArtifactFilePath = await this.downloadTheSignedArtifact(signingRequest);
               await this.logArtifactFileStat(signedArtifactFilePath);
 
             }
@@ -139,16 +139,16 @@ export class Task {
 
             core.endGroup()
 
-            throw new Error("CI system vlidation failed.");
+            throw new Error("CI system validation failed.");
         }
 
         if (!response.signingRequestId) {
             // got error from the connector
-            throw new Error(`SignPath signing request was not created. Plesase ake sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector.`);
+            throw new Error(`SignPath signing request was not created. Please make sure that SignPathConnectorUrl is pointing to the SignPath GitHub Actions connector endpoint.`);
         }
 
-        const signigRequestUrlObj  = url.parse(response.signingRequestUrl);
-        this.urlBuilder.signPathBaseUrl = signigRequestUrlObj.protocol + '//' + signigRequestUrlObj.host;
+        const signingRequestUrlObj  = url.parse(response.signingRequestUrl);
+        this.urlBuilder.signPathBaseUrl = signingRequestUrlObj.protocol + '//' + signingRequestUrlObj.host;
 
         core.info(`SignPath signing request has been successfully submitted.`);
         core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
@@ -161,13 +161,13 @@ export class Task {
         return response.signingRequestId;
     }
 
-    async ensureSigningRequestCompleted(signingrequestId: string): Promise<SigningRequestDto> {
+    async ensureSigningRequestCompleted(signingRequestId: string): Promise<SigningRequestDto> {
         // check for status update
         const requestData = await (executeWithRetries<SigningRequestDto>(
             async () => {
                 const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(
                     this.organizationId,
-                    signingrequestId);
+                    signingRequestId);
                 const signingRequestDto = (await axios
                     .get<SigningRequestDto>(
                         requestStatusUrl,
@@ -223,7 +223,7 @@ export class Task {
         return requestData;
     }
 
-    async dowloadTheSigninedArtifact(signingRequest: SigningRequestDto): Promise<string> {
+    async downloadTheSignedArtifact(signingRequest: SigningRequestDto): Promise<string> {
         core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
         const response = await axios.get(signingRequest.signedArtifactLink, {
             responseType: 'stream',
@@ -247,7 +247,7 @@ export class Task {
 
     async logArtifactFileStat(artifactPath: string) {
         await fs.stat(artifactPath, (err, stats) => {
-            const size = filesize.partial({base: 2, standard: "jedec"});
+            const size = fileSize.partial({base: 2, standard: "jedec"});
             core.info("File path: " + artifactPath);
             core.info("File size: " + size(stats.size));
         });

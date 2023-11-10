@@ -58,7 +58,7 @@ it('test that the signing request was not submitted due to validation errors', a
     sandbox.stub(core, 'getInput').returns("test");
     const setFailedStub = sandbox.stub(core, 'setFailed')
         .withArgs(sinon.match((value:any) => {
-            return value.includes('CI system vlidation failed');
+            return value.includes('CI system validation failed');
         }));
     const errorLogStub = sandbox.stub(core, 'error')
         .withArgs(sinon.match((value:any) => {
