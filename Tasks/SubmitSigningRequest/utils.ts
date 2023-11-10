@@ -4,6 +4,7 @@
 /// 2. double the delay on each iteration
 /// 3. stop when maxTotalWaitngTimeMs is reached
 /// 4. if maxDelayMs is reached, use it for all subsequent calls
+
 export async function executeWithRetries<RES>(
     promise: () => Promise<RES>,
     maxTotalWaitngTimeMs: number, minDelayMs: number, maxDelayMs: number): Promise<RES> {
