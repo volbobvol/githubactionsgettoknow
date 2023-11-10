@@ -1,33 +1,43 @@
 name: 'SubmitSigningRequest'
-description: ''
+author: 'SignPath GmbH'
+description: 'Submit a signing request to SignPath and download the signed artifact'
 inputs:
-  SignPathConnectorUrl:
+  signPathConnectorUrl:
     description: 'GitHub Actions SignPath connector URL'
     required: true
-  ApiToken:
+  apiToken:
     description: 'SignPath REST API access token. More details: https://about.signpath.io/documentation/build-system-integration#authorization'
     required: true
-  OrganizationId:
+  organizationId:
     description: 'SignPath organization id. More details: https://about.signpath.io/documentation/getting-started'
     required: true
-  ProjectSlug:
+  projectSlug:
     description: 'SignPath project slug. More details: https://about.signpath.io/documentation/projects'
     required: true
-  SigningPolicySlug:
+  signingPolicySlug:
     description: 'SignPath signing policy slug. More details: https://about.signpath.io/documentation/projects#signing-policies'
     required: true
-  ArtifactConfigurationSlug:
+  artifactConfigurationSlug:
     description: 'SignPath artifact configuration id. More details: https://about.signpath.io/documentation/projects#artifact-configurations'
     required: true
-  ArtifactName:
+  artifactName:
     description: 'Name of the artifact to sign'
     required: true
-  SignedArtifactDestinationPath:
+  signedArtifactDestinationPath:
     description: 'Path where the signed artifact will be saved'
     required: false
-  GitHubToken:
+  gitHubToken:
     description: 'GitHub access token'
     required: true
+outputs:
+  signingRequestId:
+    description: 'The id of the newly created signing request'
+  signingRequestWebUrl:
+    description: 'The url of the signing request in SignPath'
+  signPathApiUrl:
+    description: 'The base API url of the SignPath API'
+  signingRequestDownloadUrl:
+    description: 'The url of the signed artifact in SignPath'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'

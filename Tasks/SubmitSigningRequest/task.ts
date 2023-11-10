@@ -45,23 +45,39 @@ export class Task {
     }
 
     get signPathConnectorUrl(): string {
-        return core.getInput('SignPathConnectorUrl', { required: true });
+        return core.getInput('signPathConnectorUrl', { required: true });
     }
 
     get artifactName(): string {
-        return core.getInput('ArtifactName', { required: true });
+        return core.getInput('artifactName', { required: true });
     }
 
     get signedArtifactDestinationPath(): string {
-        return core.getInput('SignedArtifactDestinationPath', { required: false });
+        return core.getInput('signedArtifactDestinationPath', { required: false });
     }
 
     get organizationId(): string {
-        return core.getInput('OrganizationId', { required: true });
+        return core.getInput('organizationId', { required: true });
     }
 
     get signPathToken(): string {
-        return core.getInput('ApiToken', { required: true });
+        return core.getInput('apiToken', { required: true });
+    }
+
+    get projectSlug(): string {
+        return core.getInput('projectSlug', { required: true });
+    }
+
+    get gitHubToken(): string {
+        return core.getInput('gitHubToken', { required: true });
+    }
+
+    get signingPolicySlug(): string {
+        return core.getInput('signingPolicySlug', { required: true });
+    }
+
+    get artifactConfigurationSlug(): string {
+        return core.getInput('artifactConfigurationSlug', { required: true });
     }
 
     private async submitSigningRequest (): Promise<string> {
@@ -78,13 +94,13 @@ export class Task {
             gitHubWorkflowRunId: process.env.GITHUB_RUN_ID,
             gitHubWorkflowRunAttempt: process.env.GITHUB_RUN_ATTEMPT,
             gitHubRepository: process.env.GITHUB_REPOSITORY,
-            gitHubToken: core.getInput('GitHubToken', { required: true }),
+            gitHubToken: this.gitHubToken,
             gitHubActionsRuntimeUrl: process.env.ACTIONS_RUNTIME_URL,
             gitHubActionsRuntimeToken: process.env.ACTIONS_RUNTIME_TOKEN,
             signPathOrganizationId: this.organizationId,
-            signPathProjectSlug: core.getInput('ProjectSlug', { required: true }),
-            signPathSigningPolicySlug: core.getInput('SigningPolicySlug', { required: true }),
-            signPathArtifactConfigurationSlug: core.getInput('ArtifactConfigurationSlug', { required: true }),
+            signPathProjectSlug: this.projectSlug,
+            signPathSigningPolicySlug: this.signingPolicySlug,
+            signPathArtifactConfigurationSlug: this.artifactConfigurationSlug
         };
 
         // call the signPath API to submit the signing request
