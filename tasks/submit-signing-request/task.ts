@@ -5,10 +5,10 @@ import * as path from 'path';
 import * as moment from 'moment';
 import * as fileSize from 'filesize'
 import url from 'url';
-import { SubmitSigningRequestResult } from './DTOs/submit-signing-request-result';
+import { SubmitSigningRequestResult } from './dtos/submit-signing-request-result';
 import { executeWithRetries } from './utils';
 import { SignPathUrlBuilder } from './signpath-url-builder';
-import { SigningRequestDto } from './DTOs/signing-request';
+import { SigningRequestDto } from './dtos/signing-request';
 
 const MaxWaitingTimeForSigningRequestCompletionMs = 1000 * 60 * 60;
 const MinDelayBetweenSigningRequestStatusChecksMs = 1000 * 60; // start from 1 min

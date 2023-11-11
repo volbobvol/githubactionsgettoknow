@@ -42,9 +42,9 @@ jobs:
         name: ${{ matrix.configuration }}-artifact3
         path: "script.ps1"
 
-    - name: Run SubmitSigningRequest
+    - name: Run submit signing request
       id: "submit_with_download"
-      uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
+      uses: volbobvol/githubactionsgettoknow/tasks/submit-signing-request@sync-download-rocess
       with:
         signPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
         apiToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
@@ -56,8 +56,8 @@ jobs:
         gitHubToken: '${{ secrets.GITHUB_TOKEN }}'
         signedArtifactDestinationPath: 'signed-script.ps1'
 
-    - name: Run SubmitSigningRequestandForget
-      uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@sync-download-rocess
+    - name: Run submit signing request and forget
+      uses: volbobvol/githubactionsgettoknow/tasks/submit-signing-request@sync-download-rocess
       with:
         signPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
         apiToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'

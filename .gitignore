@@ -2,12 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/TestApp/.vs
-/TestApp/TestApp/bin
-/TestApp/TestApp/obj
 /node_modules
-/Tasks/DownloadSignedArtifact/node_modules
-/Tasks/SubmitSigningRequest/node_modules
+/Tasks/submit-signing-request/node_modules
 /**/package-lock.json
 /Tasks/**/*.js
 !/**/dist/*.js

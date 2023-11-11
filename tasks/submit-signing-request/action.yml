@@ -1,4 +1,4 @@
-name: 'SubmitSigningRequest'
+name: 'Submit a Signing Request'
 author: 'SignPath GmbH'
 description: 'Submit a signing request to SignPath and download the signed artifact'
 inputs:
