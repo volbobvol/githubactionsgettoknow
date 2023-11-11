@@ -27,7 +27,7 @@ inputs:
     description: 'Path where the signed artifact will be saved, if empty then the task will not download the artifact from SignPath'
     required: false
   gitHubToken:
-    description: 'GitHub access token. Is is recommended to use the default token provided by GitHub: ${{ secrets.GITHUB_TOKEN }}'
+    description: 'GitHub access token. Is is recommended to use the default token provided by GitHub: \${{ secrets.GITHUB_TOKEN }}'
     required: true
 outputs:
   signingRequestId:
