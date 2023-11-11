@@ -151,6 +151,7 @@ export class Task {
         this.urlBuilder.signPathBaseUrl = signingRequestUrlObj.protocol + '//' + signingRequestUrlObj.host;
 
         core.info(`SignPath signing request has been successfully submitted.`);
+        core.info(`The signing request id is ${response.signingRequestId}`);
         core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
 
 
@@ -225,6 +226,7 @@ export class Task {
 
     async downloadTheSignedArtifact(signingRequest: SigningRequestDto): Promise<string> {
         core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
+        core.info(`Signed artifact url ${signingRequest.signedArtifactLink}`);
         const response = await axios.get(signingRequest.signedArtifactLink, {
             responseType: 'stream',
             headers: {

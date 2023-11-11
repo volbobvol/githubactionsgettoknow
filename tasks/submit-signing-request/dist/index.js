@@ -13560,6 +13560,7 @@ class Task {
             const signingRequestUrlObj = url_1.default.parse(response.signingRequestUrl);
             this.urlBuilder.signPathBaseUrl = signingRequestUrlObj.protocol + '//' + signingRequestUrlObj.host;
             core.info(`SignPath signing request has been successfully submitted.`);
+            core.info(`The signing request id is ${response.signingRequestId}`);
             core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
             core.setOutput('signingRequestId', response.signingRequestId);
             core.setOutput('signingRequestWebUrl', response.signingRequestUrl);
@@ -13623,6 +13624,7 @@ class Task {
     downloadTheSignedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
             core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
+            core.info(`Signed artifact url ${signingRequest.signedArtifactLink}`);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
                 headers: {
