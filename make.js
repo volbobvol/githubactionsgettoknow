@@ -12,22 +12,22 @@ var CLI = {};
 
 CLI.build = function(args) {
     run('npm install', true); // static code analysis
-    run('npm install', true, 'tasks/submit-signing-request'); // static code analysis
+    run('npm install', true, 'actions/submit-signing-request'); // static code analysis
 
     run('npm run lint', true); // static code analysis
 
     // transpile TypeScript to JavaScript
-    run('tsc --rootDir tasks');
-    run('ncc build index.js -o dist', true, 'Tasks/submit-signing-request');
+    run('tsc --rootDir actions');
+    run('ncc build index.js -o dist', true, 'actions/submit-signing-request');
 
     run('npm run test', true); // unit tests
 }
 
 CLI.test = function(args) {
     // transpile TypeScript to JavaScript
-    run('tsc --rootDir tasks');
+    run('tsc --rootDir actions');
     try {
-      run('mocha Tasks/*/Tests/**/*.js --reporter mocha-teamcity-reporter', /*inheritStreams:*/true);
+      run('mocha actions/*/tests/**/*.js --reporter mocha-teamcity-reporter', /*inheritStreams:*/true);
     } catch (e) {
         console.error(e);
         process.exit(1);

@@ -44,29 +44,29 @@ jobs:
 
     - name: Run submit signing request
       id: "submit_with_download"
-      uses: volbobvol/githubactionsgettoknow/tasks/submit-signing-request@sync-download-rocess
+      uses: volbobvol/githubactionsgettoknow/actions/submit-signing-request@sync-download-rocess
       with:
-        signPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
-        apiToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
-        organizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
-        projectSlug: 'GitHubTest'
-        signingPolicySlug: 'TestGithubSP'
-        artifactConfigurationSlug: 'initial'
-        artifactName: ${{ matrix.configuration }}-artifact
-        gitHubToken: '${{ secrets.GITHUB_TOKEN }}'
-        signedArtifactDestinationPath: 'signed-script.ps1'
+        connector-url: 'https://brx6b0w8-44353.euw.devtunnels.ms'
+        api-token: '${{ secrets.SIGN_PATH_API_TOKEN }}'
+        organization-id: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+        project-slug: 'GitHubTest'
+        signing-policy-slug: 'TestGithubSP'
+        artifact-configuration-slug: 'initial'
+        artifact-name: ${{ matrix.configuration }}-artifact
+        github-token: '${{ secrets.GITHUB_TOKEN }}'
+        signed-artifact-destination-path: 'signed-script.ps1'
 
     - name: Run submit signing request and forget
-      uses: volbobvol/githubactionsgettoknow/tasks/submit-signing-request@sync-download-rocess
+      uses: volbobvol/githubactionsgettoknow/actions/submit-signing-request@sync-download-rocess
       with:
-        signPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
-        apiToken: '${{ secrets.SIGN_PATH_API_TOKEN }}'
-        organizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
-        projectSlug: 'GitHubTest'
-        signingPolicySlug: 'TestGithubSP'
-        artifactConfigurationSlug: 'initial'
-        artifactName: ${{ matrix.configuration }}-artifact
-        gitHubToken: '${{ secrets.GITHUB_TOKEN }}'
+        connector-url: 'https://brx6b0w8-44353.euw.devtunnels.ms'
+        api-token: '${{ secrets.SIGN_PATH_API_TOKEN }}'
+        organization-id: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
+        project-slug: 'GitHubTest'
+        signing-policy-slug: 'TestGithubSP'
+        artifact-configuration-slug: 'initial'
+        artifact-name: ${{ matrix.configuration }}-artifact
+        github-token: '${{ secrets.GITHUB_TOKEN }}'
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
@@ -74,12 +74,12 @@ jobs:
         name: ${{ matrix.configuration }}-artifact-signed
         path: "signed-script.ps1"
 
-    - name: Log signingRequestId
-      run:  echo "Output [${{steps.submit_with_download.outputs.signingRequestId }}]"
-    - name: Log signingRequestWebUrl
-      run: echo "Output [${{steps.submit_with_download.outputs.signingRequestWebUrl }}]"
-    - name: Log signPathApiUrl
-      run: echo "Output [${{steps.submit_with_download.outputs.signPathApiUrl }}]"
-    - name: Log signingRequestDownloadUrl
-      run: echo "Output [${{steps.submit_with_download.outputs.signingRequestDownloadUrl }}]"
+    - name: Log signing-request-id
+      run:  echo "Output [${{steps.submit_with_download.outputs.signing-request-id }}]"
+    - name: Log signing-request-web-url
+      run: echo "Output [${{steps.submit_with_download.outputs.signing-request-web-url }}]"
+    - name: Log signpath-api-url
+      run: echo "Output [${{steps.submit_with_download.outputs.signpath-api-url }}]"
+    - name: Log signed-artifact-download-url
+      run: echo "Output [${{steps.submit_with_download.outputs.signed-artifact-download-url }}]"
       

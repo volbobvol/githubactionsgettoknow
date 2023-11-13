@@ -13477,31 +13477,31 @@ class Task {
         });
     }
     get signPathConnectorUrl() {
-        return core.getInput('signPathConnectorUrl', { required: true });
+        return core.getInput('connector-url', { required: true });
     }
     get artifactName() {
-        return core.getInput('artifactName', { required: true });
+        return core.getInput('artifact-name', { required: true });
     }
     get signedArtifactDestinationPath() {
-        return core.getInput('signedArtifactDestinationPath', { required: false });
+        return core.getInput('signed-artifact-destination-path', { required: false });
     }
     get organizationId() {
-        return core.getInput('organizationId', { required: true });
+        return core.getInput('organization-id', { required: true });
     }
     get signPathToken() {
-        return core.getInput('apiToken', { required: true });
+        return core.getInput('api-token', { required: true });
     }
     get projectSlug() {
-        return core.getInput('projectSlug', { required: true });
+        return core.getInput('project-slug', { required: true });
     }
     get gitHubToken() {
-        return core.getInput('gitHubToken', { required: true });
+        return core.getInput('github-token', { required: true });
     }
     get signingPolicySlug() {
-        return core.getInput('signingPolicySlug', { required: true });
+        return core.getInput('signing-policy-slug', { required: true });
     }
     get artifactConfigurationSlug() {
-        return core.getInput('artifactConfigurationSlug', { required: true });
+        return core.getInput('artifact-configuration-slug', { required: true });
     }
     submitSigningRequest() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -13559,12 +13559,12 @@ class Task {
             }
             const signingRequestUrlObj = url_1.default.parse(response.signingRequestUrl);
             this.urlBuilder.signPathBaseUrl = signingRequestUrlObj.protocol + '//' + signingRequestUrlObj.host;
-            core.info(`SignPath signing request has been successfully submitted.`);
+            core.info(`SignPath signing request has been successfully submitted`);
             core.info(`The signing request id is ${response.signingRequestId}`);
             core.info(`You can view the signing request here: ${response.signingRequestUrl}`);
-            core.setOutput('signingRequestId', response.signingRequestId);
-            core.setOutput('signingRequestWebUrl', response.signingRequestUrl);
-            core.setOutput('signPathApiUrl', this.urlBuilder.signPathBaseUrl + '/API');
+            core.setOutput('signing-request-id', response.signingRequestId);
+            core.setOutput('signing-request-web-url', response.signingRequestUrl);
+            core.setOutput('signpath-api-url', this.urlBuilder.signPathBaseUrl + '/API');
             return response.signingRequestId;
         });
     }
@@ -13593,7 +13593,7 @@ class Task {
                     .then((response) => {
                     const data = response.data;
                     if (data && !data.isFinalStatus) {
-                        core.info(`The signing request status is ${data.status}, which is not a final status; after delay, we will check again...`);
+                        core.info(`The signing request status is ${data.status}, which is not a final status; after a delay, we will check again...`);
                         throw new Error('Retry signing request status check.');
                     }
                     return data;
@@ -13610,12 +13610,12 @@ class Task {
             core.info(`Signing request status is ${requestData.status}`);
             if (!requestData.isFinalStatus) {
                 const maxWaitingTime = moment.utc(MaxWaitingTimeForSigningRequestCompletionMs).format("hh:mm");
-                core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state.`);
+                core.error(`We have exceeded the maximum waiting time, which is ${maxWaitingTime}, and the signing request is still not in a final state`);
                 throw new Error(`The signing request is not completed. The current status is "${requestData.status}`);
             }
             else {
                 if (requestData.status !== "Completed") {
-                    throw new Error(`The signing request is not completed. The final status is "${requestData.status}.`);
+                    throw new Error(`The signing request is not completed. The final status is "${requestData.status}`);
                 }
             }
             return requestData;
@@ -13623,7 +13623,7 @@ class Task {
     }
     downloadTheSignedArtifact(signingRequest) {
         return __awaiter(this, void 0, void 0, function* () {
-            core.setOutput('signingRequestDownloadUrl', signingRequest.signedArtifactLink);
+            core.setOutput('signed-artifact-download-url', signingRequest.signedArtifactLink);
             core.info(`Signed artifact url ${signingRequest.signedArtifactLink}`);
             const response = yield axios_1.default.get(signingRequest.signedArtifactLink, {
                 responseType: 'stream',
@@ -13639,7 +13639,7 @@ class Task {
                 writer.on('finish', resolve);
                 writer.on('error', reject);
             });
-            core.info("The signed artifact has been successfully downloaded from SignPath.");
+            core.info("The signed artifact has been successfully downloaded from SignPath");
             return targetFilePath;
         });
     }
@@ -13647,7 +13647,6 @@ class Task {
         return __awaiter(this, void 0, void 0, function* () {
             yield fs.stat(artifactPath, (err, stats) => {
                 const size = fileSize.partial({ base: 2, standard: "jedec" });
-                core.info("File path: " + artifactPath);
                 core.info("File size: " + size(stats.size));
             });
         });

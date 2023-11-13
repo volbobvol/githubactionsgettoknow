@@ -8,7 +8,7 @@
     "test": "node make.js test",
     "lint": "tslint --project tsconfig.json"
   },
-  "name": "signpath.connectors.githubactions.tasks",
+  "name": "signpath.connectors.githubactions.actions",
   "version": "1.0.0",
   "description": "Use SignPath to sign your build artifacts.",
   "devDependencies": {

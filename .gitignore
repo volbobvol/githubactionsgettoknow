@@ -3,7 +3,7 @@
 ################################################################################
 
 /node_modules
-/Tasks/submit-signing-request/node_modules
+/actions/submit-signing-request/node_modules
 /**/package-lock.json
-/Tasks/**/*.js
+/actions/**/*.js
 !/**/dist/*.js
