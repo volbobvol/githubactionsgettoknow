@@ -11,7 +11,7 @@ See [action.yml](action.yml)
 ```yaml
 steps:
 - id: optional_step_id
-  uses: signpath/gitgub-actions-integration/tasks/submit-signing-request@main
+  uses: signpath/github-actions-integration/tasks/submit-signing-request@main
       with:
         signPathConnectorUrl: '<SignPath GitHub Actions connector URL>'
         apiToken: '${{ secrets.SIGNPATH_API_TOKEN }}'
@@ -29,7 +29,7 @@ steps:
 ```yaml
 steps:
 - id: optional_step_id
-  uses: signpath/gitgub-actions-integration/tasks/submit-signing-request@main
+  uses: signpath/github-actions-integration/tasks/submit-signing-request@main
       with:
         signPathConnectorUrl: '<SignPath GitHub Actions connector URL>'
         apiToken: '${{ secrets.SIGNPATH_API_TOKEN }}'
