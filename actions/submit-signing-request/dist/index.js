@@ -13632,6 +13632,12 @@ class Task {
                 }
             });
             const targetFilePath = path.join(process.env.GITHUB_WORKSPACE, this.signedArtifactDestinationPath);
+            // make sure that the target directory exists
+            const targetDir = path.dirname(targetFilePath);
+            if (!fs.existsSync(targetDir)) {
+                core.info(`Directory ${targetDir} does not exist, and will be created`);
+                fs.mkdirSync(targetDir, { recursive: true });
+            }
             core.info(`The signed artifact is being downloaded from SignPath and will be saved to ${targetFilePath}`);
             const writer = fs.createWriteStream(targetFilePath);
             response.data.pipe(writer);
