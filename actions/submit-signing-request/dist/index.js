@@ -13571,6 +13571,7 @@ class Task {
     ensureSigningRequestCompleted(signingRequestId) {
         return __awaiter(this, void 0, void 0, function* () {
             // check for status update
+            core.info(`Checking the signing request status...`);
             const requestData = yield ((0, utils_1.executeWithRetries)(() => __awaiter(this, void 0, void 0, function* () {
                 const requestStatusUrl = this.urlBuilder.buildGetSigningRequestUrl(this.organizationId, signingRequestId);
                 const signingRequestDto = (yield axios_1.default
@@ -13583,6 +13584,7 @@ class Task {
                     .catch((e) => {
                     var _a;
                     core.error(`SignPath API call error: ${e.message}`);
+                    core.error(`Signing request details API URL is: ${requestStatusUrl}`);
                     if (((_a = e.response) === null || _a === void 0 ? void 0 : _a.data) && typeof (e.response.data) === "string") {
                         throw new Error(JSON.stringify({
                             'data': e.response.data
