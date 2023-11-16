@@ -28,7 +28,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with: 
         name: ${{ matrix.configuration }}-artifact
-        path: "script.ps1"
+        path: "hello-world.exe"
 
     - name: Upload artifact
       uses: actions/upload-artifact@v3
@@ -54,7 +54,7 @@ jobs:
         artifact-configuration-slug: 'initial'
         artifact-name: ${{ matrix.configuration }}-artifact
         github-token: '${{ secrets.GITHUB_TOKEN }}'
-        signed-artifact-destination-path: 'signed-script.ps1'
+        signed-artifact-destination-path: 'hello-world-signed.exe'
 
     - name: Run submit signing request and forget
       uses: volbobvol/githubactionsgettoknow/actions/submit-signing-request@sync-download-rocess
@@ -72,7 +72,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with: 
         name: ${{ matrix.configuration }}-artifact-signed
-        path: "signed-script.ps1"
+        path: "hello-world-signed.exe"
 
     - name: Log signing-request-id
       run:  echo "Output [${{steps.submit_with_download.outputs.signing-request-id }}]"
