@@ -24,7 +24,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: original-artifact
-        path: "./files/Multifiles/Folder_Zip_DLL.zip"
+        path: "./files/hello-world.exe"
     
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
