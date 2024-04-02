@@ -1,24 +1,54 @@
 name: Sign App
 
 on:
-  push:
-  pull_request:
-jobs:
+ push:
+ pull_request:
 
+env:
+  OrgId: d3bcfc23-d90f-43c4-878d-c52b60c4980c
+
+jobs:
   build:
+    permissions:
+      actions: read  # get run data
+      contents: read  # do checkout
+
     runs-on: windows-latest
+
     steps:
-      - name: Log Version
-        run: "echo \"Version 2\""
-      # - name: Run SubmitSigningRequest
-      #   uses: volbobvol/githubactionsgettoknow/Tasks/SubmitSigningRequest@main
-      #   with:
-      #     SignPathConnectorUrl: 'https://brx6b0w8-44353.euw.devtunnels.ms'
-      #     SignPathApiUserToken: ${{ secrets.SIGN_PATH_API_TOKEN }}
-      #     OrganizationId: 'fe33c075-e317-4587-9ecc-0495c44c45e0'
-      #     ProjectSlug: 'GitHubTest'
-      #     SigningPolicySlug: ${{ env.SigningPolicySlug }}
-      #     ArtifactConfigurationSlug: 'initial'
-      #     ArtifactName: ${{ matrix.configuration }}-artifact
-      #     DownloadArtifactWorkflowName: 'Download Artifact'
-      #     ArtifactContext: ${{ env.DeployTo }}
+    
+    - name: checkout
+      uses: actions/checkout@v3
+
+    - name: Upload the artifcat file
+      uses: actions/upload-artifact@v4
+      with: 
+        name: original-artifact
+        path: "./files/Multifiles/Folder_Zip_DLL.zip"
+    
+    - name: Run submit signing request for FQA ORG1
+      id: "submit_sr"
+      uses: SignPath/github-actions/actions/submit-signing-request@v0.2
+      with:
+        connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
+        api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
+        organization-id: ${{ env.OrgId }}
+        project-slug: 'TestGha'
+        signing-policy-slug: 'SP'
+        artifact-configuration-slug: 'initial'
+        github-artifact-name: original-artifact
+        github-token: '${{ secrets.GITHUB_TOKEN }}'
+        wait-for-completion: true
+        output-artifact-directory: 'org/content'
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: original-artifact
+        path: org/content
+
+    - name: Log submit-signing-request task output for Org1
+      run: |
+           echo "signing-request-id [${{steps.submit_sr.outputs.signing-request-id }}]"
+           echo "signing-request-web-url [${{steps.submit_sr.outputs.signing-request-web-url }}]"
+           echo "signpath-api-url [${{steps.submit_sr.outputs.signpath-api-url }}]"
+           echo "signed-artifact-download-url [${{steps.submit_sr.outputs.signed-artifact-download-url }}]"
