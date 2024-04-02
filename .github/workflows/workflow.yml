@@ -1,25 +1,12 @@
 name: Sign App
 
 on:
-  issue_comment:
-  #workflow_run:
-   # workflows: [Build App]
-   # types: [completed]
-
+  push:
+  pull_request:
 jobs:
 
   build:
-
-    strategy:
-      matrix:
-        configuration: [Debug, Release]
-
     runs-on: windows-latest
-    
-
-    env:
-      SigningPolicySlug: "${{ matrix.configuration == 'Debug' && 'TestGithubSP' || 'ProdGithubSP' }}"
-      DeployTo: "${{ matrix.configuration == 'Debug' && 'Staging' || 'Production' }}"
     steps:
       - name: Log Version
         run: "echo \"Version 2\""
