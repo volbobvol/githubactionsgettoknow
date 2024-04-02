@@ -41,10 +41,11 @@ jobs:
         wait-for-completion: true
         output-artifact-directory: 'org/content'
 
-    - uses: actions/download-artifact@v4
-      with:
-        name: original-artifact
-        path: org/content
+    - name: Upload the signed artifcat file
+      uses: actions/upload-artifact@v4
+      with: 
+        name: signed-artifact
+        path: "org/content"
 
     - name: Log submit-signing-request task output for Org1
       run: |
