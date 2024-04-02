@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "@actions/core": "^1.10.0",
-    "@actions/http-client": "^2.1.0",
-    "@actions/artifact": "^1.1.1"
-  },
-  "name": "signpath.connectors.githubactions.tasks.submitsigningrequest"
-}
