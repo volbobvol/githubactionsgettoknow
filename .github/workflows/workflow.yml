@@ -31,7 +31,7 @@ jobs:
       id: "submit_sr"
       uses: SignPath/github-actions/actions/submit-signing-request@v0.2
       with:
-        connector-url: 'https://githubactions.connectors.wrongurl.signpath.io:15021/'
+        connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
