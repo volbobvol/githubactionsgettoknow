@@ -39,6 +39,7 @@ jobs:
         # artifact-configuration-slug: 'initial'
         github-artifact-name: original-artifact
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
+        # github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
 
