@@ -32,7 +32,7 @@ jobs:
       uses: SignPath/github-actions/actions/submit-signing-request@v0.2
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
-        api-token: "ABvuCN83WPF5DL+1zkKR4ictQbuVkDrriycICyGxyp9a"
+        api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
