@@ -35,7 +35,7 @@ jobs:
         api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
-        signing-policy-slug: 'SP'
+        signing-policy-slug: 'SP2'
         artifact-configuration-slug: 'initial'
         github-artifact-name: original-artifact
         github-token: '${{ secrets.GITHUB_TOKEN }}'
