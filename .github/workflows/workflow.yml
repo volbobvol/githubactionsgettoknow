@@ -36,7 +36,7 @@ jobs:
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
-        artifact-configuration-slug: 'initial'
+        # artifact-configuration-slug: 'initial'
         github-artifact-name: original-artifact
         github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
