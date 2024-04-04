@@ -33,7 +33,7 @@ jobs:
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
-        organization-id: 64c08326-52c4-4097-a7e3-a3afff0278ca
+        organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
         artifact-configuration-slug: 'initial'
