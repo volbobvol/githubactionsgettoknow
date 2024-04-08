@@ -44,7 +44,7 @@ jobs:
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
-        wait-for-completion-timeout-in-second: 1
+        wait-for-completion-timeout-in-seconds: 1
 
 
     - name: Upload the signed artifcat file
