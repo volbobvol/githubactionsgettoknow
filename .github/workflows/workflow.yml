@@ -25,7 +25,8 @@ jobs:
       uses: actions/upload-artifact@v4
       with: 
         name: original-artifact
-        path: "./files/hello-world.exe"
+        #path: "./files/hello-world.exe"
+        path: "./files/Multifiles/Folder_Zip_DLL.zip"
     
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
@@ -42,7 +43,7 @@ jobs:
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
-        download-signed-artifact-timeout-in-seconds: "1"
+        download-signed-artifact-timeout-in-seconds: 1
 
 
     - name: Upload the signed artifcat file
