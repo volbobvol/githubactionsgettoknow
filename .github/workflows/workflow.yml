@@ -44,7 +44,7 @@ jobs:
         github-artifact-name: original-artifact
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
-        wait-for-completion: false
+        wait-for-completion: true
         output-artifact-directory: 'org/content'
         # wait-for-completion-timeout-in-seconds: 1
 
