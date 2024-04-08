@@ -34,7 +34,7 @@ jobs:
       uses: SignPath/github-actions/actions/submit-signing-request@v0.2
       with:
         #connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
-        connector-url: 'https://httpbin.org/status/502'
+        connector-url: 'https://httpbin.org/status/50'
         api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
