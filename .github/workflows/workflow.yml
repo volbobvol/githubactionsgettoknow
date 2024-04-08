@@ -38,7 +38,7 @@ jobs:
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
         # artifact-configuration-slug: 'initial'
-        artifact-configuration-slug: 'zip2'
+        artifact-configuration-slug: 'zip3'
         github-artifact-name: original-artifact
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
