@@ -26,8 +26,8 @@ jobs:
       with: 
         name: original-artifact
         #path: "./files/hello-world.exe"
-        #path: "./files/Multifiles/Folder_Zip_DLL_big.zip"
-        path: "./files/Multifiles/Folder_Zip_DLL_big2.zip"
+        path: "./files/Multifiles/Folder_Zip_DLL_big.zip"
+        #path: "./files/Multifiles/Folder_Zip_DLL_big2.zip"
     
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
