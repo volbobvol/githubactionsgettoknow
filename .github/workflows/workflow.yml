@@ -40,7 +40,6 @@ jobs:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         #connector-url: 'https://httpbin.org/status/502'
         #api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
-        api-token: "AE09SRXkQGsROt3Y3k1fQNq6H5vj6ySZBozyRAfRVo73"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
@@ -49,6 +48,7 @@ jobs:
         github-artifact-name: original-artifact
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
+        github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_CORRECT }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
         download-signed-artifact-timeout-in-seconds: 200
