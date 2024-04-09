@@ -10,14 +10,16 @@ env:
 
 jobs:
   build:
+    #runs-on: windows-latest
+    runs-on: 
+      group: Paid
+      #group: Local
+
     permissions:
       actions: read  # get run data
       contents: read  # do checkout
 
-    runs-on: windows-latest
-
     steps:
-    
     - name: checkout
       uses: actions/checkout@v3
 
