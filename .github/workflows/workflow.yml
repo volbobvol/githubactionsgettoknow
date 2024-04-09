@@ -3,6 +3,7 @@ name: Sign App
 on:
  push:
  pull_request:
+ workflow_dispatch:
 
 # enviornment Variables
 env:
