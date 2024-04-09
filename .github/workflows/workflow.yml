@@ -11,10 +11,10 @@ env:
 
 jobs:
   build:
-    #runs-on: windows-latest
-    runs-on: 
+    runs-on: windows-latest
+    #runs-on: 
       #group: Paid
-      group: Local
+      #group: Local
 
     permissions:
       actions: read  # get run data
@@ -48,10 +48,11 @@ jobs:
         github-artifact-name: original-artifact
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
-        github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_CORRECT }}'
+        # github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_CORRECT }}'
         # github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_NO_PERMISSION }}'
         wait-for-completion: true
-        output-artifact-directory: 'org/content'
+        output-artifact-directory: '\x:?ß'
+        # output-artifact-directory: 'org/content'
         download-signed-artifact-timeout-in-seconds: 200
         # wait-for-completion-timeout-in-seconds: 1
 
