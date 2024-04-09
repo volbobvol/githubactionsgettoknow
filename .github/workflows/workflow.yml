@@ -30,7 +30,8 @@ jobs:
     
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
-      uses: SignPath/github-actions/actions/submit-signing-request@v0.2
+      #uses: SignPath/github-actions/actions/submit-signing-request@v0.2
+      uses: SignPath/github-actions/actions/submit-signing-request@bugfix/SIGN-6926
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
@@ -44,7 +45,7 @@ jobs:
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
-        download-signed-artifact-timeout-in-seconds: 1
+        download-signed-artifact-timeout-in-seconds: 2
 
 
     - name: Upload the signed artifcat file
