@@ -39,7 +39,7 @@ jobs:
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         #connector-url: 'https://httpbin.org/status/502'
-        #api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
+        api-token: "${{ secrets.SIGN_PATH_API_TOKEN }}"
         organization-id: ${{ env.OrgId }}
         project-slug: 'TestGha'
         signing-policy-slug: 'SP'
