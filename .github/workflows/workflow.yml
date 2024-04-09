@@ -13,8 +13,8 @@ jobs:
   build:
     #runs-on: windows-latest
     runs-on: 
-      group: Paid
-      #group: Local
+      #group: Paid
+      group: Local
 
     permissions:
       actions: read  # get run data
