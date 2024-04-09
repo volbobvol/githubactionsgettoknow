@@ -47,7 +47,7 @@ jobs:
         # github-token: '${{ secrets.GITHUB_TOKEN }}'
         wait-for-completion: true
         output-artifact-directory: 'org/content'
-        download-signed-artifact-timeout-in-seconds: 2
+        download-signed-artifact-timeout-in-seconds: 30
         # wait-for-completion-timeout-in-seconds: 1
 
 
