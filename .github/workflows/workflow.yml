@@ -11,9 +11,9 @@ env:
 
 jobs:
   build:
-    runs-on: windows-latest
-    #runs-on: 
-      #group: Paid
+    #runs-on: windows-latest
+    runs-on: 
+      group: Paid
       #group: Local
 
     permissions:
@@ -46,10 +46,10 @@ jobs:
         # artifact-configuration-slug: 'initial'
         artifact-configuration-slug: 'zip3'
         github-artifact-name: original-artifact
-        github-token: '${{ secrets.GITHUB_TOKEN }}'
+        #github-token: '${{ secrets.GITHUB_TOKEN }}'
         #github-token: '${{ secrets.GITHUB_TOKEN }}'
         #github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_CORRECT }}'
-        #github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_NO_PERMISSION }}'
+        github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_NO_PERMISSION }}'
         wait-for-completion: false
         output-artifact-directory: 'org/content'
         download-signed-artifact-timeout-in-seconds: 200
