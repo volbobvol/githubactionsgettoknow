@@ -35,7 +35,7 @@ jobs:
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
       #uses: SignPath/github-actions/actions/submit-signing-request@v0.2
-      uses: SignPath/github-actions/actions/submit-signing-request@bugfix/SIGN-6926
+      uses: SignPath/github-actions/actions/submit-signing-request@bugfix/main
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         #connector-url: 'https://httpbin.org/status/502'
