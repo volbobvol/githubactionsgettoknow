@@ -11,9 +11,9 @@ env:
 
 jobs:
   build:
-    #runs-on: windows-latest
-    runs-on: 
-      group: Paid
+    runs-on: windows-latest
+    #runs-on: 
+      #group: Paid
       #group: Local
 
     permissions:
@@ -35,7 +35,7 @@ jobs:
     - name: Run submit signing request for FQA ORG1
       id: "submit_sr"
       #uses: SignPath/github-actions/actions/submit-signing-request@v0.2
-      uses: SignPath/github-actions/actions/submit-signing-request@bugfix/main
+      uses: SignPath/github-actions/actions/submit-signing-request@main
       with:
         connector-url: 'https://githubactions.connectors.fqa.test.signpath.io:15021/'
         #connector-url: 'https://httpbin.org/status/502'
@@ -49,8 +49,8 @@ jobs:
         #github-token: '${{ secrets.GITHUB_TOKEN }}'
         #github-token: '${{ secrets.GITHUB_TOKEN }}'
         #github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_CORRECT }}'
-        github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_NO_PERMISSION }}'
-        wait-for-completion: false
+        #github-extended-verification-token: '${{ secrets.EXTENDED_VERIFICATION_NO_PERMISSION }}'
+        wait-for-completion: true
         output-artifact-directory: 'org/content'
         download-signed-artifact-timeout-in-seconds: 200
         # wait-for-completion-timeout-in-seconds: 1
